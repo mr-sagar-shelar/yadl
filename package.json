@@ -1,0 +1,52 @@
+{
+  "name": "yadl",
+  "description": "Yet Another Diagramming Language",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "mr-sagar-shelar",
+  "scripts": {
+    "dev": "hugo server",
+    "build": "hugo --gc --minify --templateMetrics --templateMetricsHints --forceSyncStatic",
+    "preview": "hugo server --disableFastRender --navigateToChanged --templateMetrics --templateMetricsHints --watch --forceSyncStatic -e production --minify",
+    "dev:example": "cd exampleSite && hugo server",
+    "build:example": "cd exampleSite && hugo --gc --minify --templateMetrics --templateMetricsHints --forceSyncStatic",
+    "preview:example": "cd exampleSite && hugo server --disableFastRender --navigateToChanged --templateMetrics --templateMetricsHints --watch --forceSyncStatic -e production --minify",
+    "update-modules": "node ./scripts/clearModules.js && hugo mod clean --all && hugo mod get -u ./... && hugo mod tidy",
+    "remove-darkmode": "node ./scripts/removeDarkmode.js && yarn format",
+    "project-setup": "node ./scripts/projectSetup.js",
+    "theme-setup": "node ./scripts/themeSetup.js",
+    "update-theme": "node ./scripts/themeUpdate.js",
+    "format": "prettier -w .",
+    "copy:libs:prepare": "shx mkdir -p ./public/libs/monaco-editor-workers/workers",
+    "build:core": "npm run build --workspace core",
+    "copy:monaco-workers": "npm run copy:libs:prepare && shx cp -f ./node_modules/monaco-editor-workers/dist/index.* ./public/libs/monaco-editor-workers && shx cp -f ./node_modules/monaco-editor-workers/dist/workers/editorWorker-iife.js ./public/libs/monaco-editor-workers/workers"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/chalk": "^2.2.0",
+    "autoprefixer": "^10.4.19",
+    "chalk": "^4.0.0",
+    "concurrently": "~8.2.1",
+    "cross-env": "~7.0.3",
+    "front-matter": "^4.0.2",
+    "glob": "^10.4.1",
+    "postcss": "^8.4.39",
+    "postcss-cli": "^11.0.0",
+    "prettier": "^3.3.2",
+    "prettier-plugin-go-template": "^0.0.15",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "shx": "~0.3.4",
+    "tailwind-bootstrap-grid": "^5.1.0",
+    "tailwindcss": "^3.4.4",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.25.6",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-react": "^7.24.7",
+    "d3": "^7.8.5",
+    "langium-ast-helper": "^0.1.2",
+    "langium-website-core": "^1.0.0"
+  }
+}

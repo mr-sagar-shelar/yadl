@@ -1,0 +1,46 @@
+############# English navigation ##############
+
+# main menu
+[[main]]
+name = "Home"
+pageRef = "/"
+weight = 1
+
+[[main]]
+name = "About"
+pageRef = "/about"
+weight = 2
+
+[[main]]
+name = "Docs"
+pageRef = "/docs"
+weight = 3
+
+[[main]]
+weight = 4
+name = "Examples"
+
+[[main]]
+parent = "Examples"
+name = "Blog"
+pageRef = "/blog"
+
+[[main]]
+parent = "Examples"
+name = "Contact"
+pageRef = "/contact"
+
+[[main]]
+parent = "Examples"
+name = "Developers"
+pageRef = "/developers"
+
+[[main]]
+parent = "Examples"
+name = "Categories"
+pageRef = "/categories"
+
+[[main]]
+parent = "Examples"
+name = "404 Page"
+pageRef = "/404"
