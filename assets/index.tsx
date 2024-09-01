@@ -18,6 +18,7 @@ import {
   getMainTreeNode,
 } from "./domainmodel-tools";
 import D3Tree from "./d3tree";
+import Preview from "Preview";
 
 addMonacoStyles("monaco-styles-helper");
 
@@ -142,7 +143,10 @@ class AppClass extends React.Component<{}, AppState> {
               style={style}
             />
           </div>
-          <div>{this.state.ast && this.renderAST(this.state.ast)}</div>
+          <div>
+            {this.state.ast && this.renderAST(this.state.ast)}
+            <Preview />
+          </div>
         </div>
       </>
     );
