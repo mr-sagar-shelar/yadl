@@ -27,8 +27,6 @@ buildWorkerDefinition(
   false,
 );
 
-let userConfig: UserConfig;
-
 interface AppState {
   ast?: DomainModelAstNode;
   diagnostics?: Diagnostic[];
@@ -131,6 +129,8 @@ class AppClass extends React.Component<{}, AppState> {
       width: "100%",
     };
 
+    const userConfig = getUserConfig(`vs-${localStorage.getItem("theme")}`);
+
     return (
       <>
         <div className="grid xs:grid-cols-1 lg:grid-cols-2">
@@ -149,17 +149,23 @@ class AppClass extends React.Component<{}, AppState> {
   }
 }
 
-userConfig = createUserConfig({
-  languageId: "helloworld",
-  code: `// This is Instagram Example
-  person John
-
-  Hello John!
-
-  `,
-  worker: "/yadl-server-worker.js",
-  monarchGrammar: syntaxHighlighting,
-});
+const getUserConfig = (theme) => {
+  let userConfig = createUserConfig(
+    {
+      languageId: "helloworld",
+      code: `// This is Instagram Example
+    person John
+  
+    Hello John!
+  
+    `,
+      worker: "/yadl-server-worker.js",
+      monarchGrammar: syntaxHighlighting,
+    },
+    theme,
+  );
+  return userConfig;
+};
 
 // Render to #root
 ReactDOM.render(
