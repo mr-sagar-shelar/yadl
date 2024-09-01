@@ -58,6 +58,9 @@ jobs:
       - name: Copy Monaco Workers
         run: npm run copy:monaco-workers
 
+      - name: Copy Reactflow Style
+        run: npm run copy:reactflow:style
+
       - name: Build Worker
         run: |
           cd ./yadl-lang
@@ -65,7 +68,6 @@ jobs:
           npm run build
           npm run build:web
           npm run build:worker
-          npm run copy:reactflow:style
 
       - name: Publish to GitHub Pages
         run: npm run build
