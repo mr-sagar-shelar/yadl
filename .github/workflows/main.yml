@@ -65,6 +65,7 @@ jobs:
           npm run build
           npm run build:web
           npm run build:worker
+          npm run copy:reactflow:style
 
       - name: Publish to GitHub Pages
         run: npm run build

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, ChangeEventHandler } from "react";
 import {
   ReactFlow,
   MiniMap,
@@ -7,36 +7,100 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
+  Position,
+  Node,
+  Edge,
+  ColorMode,
+  OnConnect,
+  Panel,
 } from "@xyflow/react";
 
-const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
+const nodeDefaults = {
+  sourcePosition: Position.Right,
+  targetPosition: Position.Left,
+};
+
+const initialNodes: Node[] = [
+  {
+    id: "A",
+    type: "input",
+    position: { x: 0, y: 150 },
+    data: { label: "A" },
+    ...nodeDefaults,
+  },
+  {
+    id: "B",
+    position: { x: 250, y: 0 },
+    data: { label: "B" },
+    ...nodeDefaults,
+  },
+  {
+    id: "C",
+    position: { x: 250, y: 150 },
+    data: { label: "C" },
+    ...nodeDefaults,
+  },
+  {
+    id: "D",
+    position: { x: 250, y: 300 },
+    data: { label: "D" },
+    ...nodeDefaults,
+  },
 ];
-const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+
+const initialEdges: Edge[] = [
+  {
+    id: "A-B",
+    source: "A",
+    target: "B",
+  },
+  {
+    id: "A-C",
+    source: "A",
+    target: "C",
+  },
+  {
+    id: "A-D",
+    source: "A",
+    target: "D",
+  },
+];
 
 export default function App() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [colorMode, setColorMode] = useState<ColorMode>("dark");
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const onConnect = useCallback(
+  const onConnect: OnConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
   );
 
+  const onChange: ChangeEventHandler<HTMLSelectElement> = (evt) => {
+    setColorMode(evt.target.value as ColorMode);
+  };
+
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "100%", height: "400px" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        colorMode={"dark"}
+        colorMode={colorMode}
+        fitView
       >
-        <Controls />
         <MiniMap />
-        <Background variant="dots" gap={12} size={1} />
+        <Background />
+        <Controls />
+        <Panel position="top-right">
+          <select onChange={onChange} data-testid="colormode-select">
+            <option value="dark">dark</option>
+            <option value="light">light</option>
+            <option value="system">system</option>
+          </select>
+        </Panel>
       </ReactFlow>
     </div>
   );
