@@ -20,7 +20,7 @@
     "clean:static": "shx rm -rf ./static/showcase ./static/playground ./static/libs",
     "build:core": "npm run build --workspace core",
     "copy:reactflow:style": "shx cp -f ./node_modules/@xyflow/react/dist/style.css ./public/css/reactflow.css",
-    "copy:libs:prepare": "shx mkdir -p ./public/libs/monaco-editor-workers/workers",
+    "copy:libs:prepare": "shx mkdir -p ./public/libs/monaco-editor-workers/workers && shx mkdir -p ./public/css",
     "copy:monaco-workers": "npm run copy:libs:prepare && shx cp -f ./node_modules/monaco-editor-workers/dist/index.* ./public/libs/monaco-editor-workers && shx cp -f ./node_modules/monaco-editor-workers/dist/workers/editorWorker-iife.js ./public/libs/monaco-editor-workers/workers"
   },
   "devDependencies": {
