@@ -1,0 +1,15 @@
+{
+    "projectName": "Yadl",
+    "languages": [{
+        "id": "yadl",
+        "grammar": "src/language/yadl.langium",
+        "fileExtensions": [".yadl"],
+        "textMate": {
+            "out": "syntaxes/yadl.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "src/syntaxes/yadl.monarch.ts"
+        }
+    }],
+    "out": "src/language/generated"
+}
