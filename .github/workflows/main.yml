@@ -55,6 +55,9 @@ jobs:
       - name: Build Worker
         run: |
           cd ./yadl-lang
+          npm run langium:generate
+          npm run build
+          npm run build:web
           npm run build:worker
 
       - name: Publish to GitHub Pages
