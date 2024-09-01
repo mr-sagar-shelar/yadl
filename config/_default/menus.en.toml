@@ -17,8 +17,9 @@ pageRef = "/docs"
 weight = 3
 
 [[main]]
+name = "Showcase"
+pageRef = "/examples"
 weight = 4
-name = "Examples"
 
 [[main]]
 parent = "Examples"
