@@ -50,6 +50,7 @@
     "langium-website-core": "^1.0.0"
   },
   "workspaces": [
-    "yadl-lang"
+    "yadl-lang",
+    "core"
   ]
 }
