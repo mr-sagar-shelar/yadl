@@ -12,7 +12,6 @@ import {
   Edge,
   ColorMode,
   OnConnect,
-  Panel,
 } from "@xyflow/react";
 import { nodeTypes} from "./nodes/nodeTypes";
 
@@ -168,13 +167,6 @@ export default function Preview({darkMode}: PreviewProps) {
         <MiniMap />
         <Background />
         <Controls />
-        <Panel position="top-right">
-          <select onChange={onChange} data-testid="colormode-select">
-            <option value="dark">dark</option>
-            <option value="light">light</option>
-            <option value="system">system</option>
-          </select>
-        </Panel>
       </ReactFlow>
     </div>
   );
