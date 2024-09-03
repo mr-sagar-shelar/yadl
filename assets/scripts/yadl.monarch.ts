@@ -1,4 +1,4 @@
-export const syntaxHighlighting = {
+export default {
     keywords: ["datatype", "entity", "extends", "many", "package"],
     operators: [".", ":"],
     symbols: /\.|:|\{|\}/,

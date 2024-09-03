@@ -16,9 +16,8 @@ import {
   DomainModelAstNode,
   getMainTreeNode,
 } from "./domainmodel-tools";
-import {
-  syntaxHighlighting,
-} from "./scripts/yadl.monarch";
+import syntaxHighlighting from "./scripts/yadl.monarch";
+
 import D3Tree from "./d3tree";
 import Preview from "Preview";
 
