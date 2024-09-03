@@ -1,6 +1,7 @@
 <div id="editor"></div>
 
 <link rel="stylesheet" href="/css/reactflow.css" />
+<link rel="stylesheet" href="/css/devices.min.css" />
 
 {{ with resources.Get "index.tsx" }}
   {{ $options := dict "defines" (dict "process.env.NODE_ENV" "\"development\"" "process.env.BaseURL" (printf `"%s"` $.Site.BaseURL)) }}

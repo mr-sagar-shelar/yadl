@@ -48,7 +48,7 @@ class AppClass extends React.Component<{}, AppState> {
     this.state = {
       ast: undefined,
       diagnostics: undefined,
-      userConfig: getUserConfig(`vs-${localStorage.getItem("theme")}`)
+      userConfig: getUserConfig(`vs-${localStorage.getItem("theme")}`),
     };
   }
 
@@ -83,7 +83,6 @@ class AppClass extends React.Component<{}, AppState> {
    */
   onDocumentChange(resp: DocumentChangeResponse) {
     // get the AST from the response and deserialize it
-    console.error("$$$$ Document Changed");
     const ast = deserializeAST(resp.content) as DomainModelAstNode;
 
     this.setState({
@@ -102,7 +101,12 @@ class AppClass extends React.Component<{}, AppState> {
       this.state.diagnostics == null ||
       this.state.diagnostics.filter((i) => i.severity === 1).length == 0
     ) {
-      return <D3Tree data={getMainTreeNode(ast)} />;
+      return (
+        <>
+          <D3Tree data={getMainTreeNode(ast)} />;
+          <Preview />
+        </>
+      );
     }
 
     // otherwise, render the errors
@@ -143,10 +147,7 @@ class AppClass extends React.Component<{}, AppState> {
               style={style}
             />
           </div>
-          <div>
-            {this.state.ast && this.renderAST(this.state.ast)}
-            <Preview />
-          </div>
+          <div>{this.state.ast && this.renderAST(this.state.ast)}</div>
         </div>
       </>
     );
@@ -157,11 +158,17 @@ const getUserConfig = (theme) => {
   let userConfig = createUserConfig(
     {
       languageId: "yadl",
-      code: `// This is Instagram Example
-    person John
-  
-    Hello John!
-  
+      code: `
+enum Country {
+  INDIA
+  CHINA
+}
+
+
+enum Country2 {
+  INDIA
+  CHINA
+}  
     `,
       worker: "/yadl-server-worker.js",
       monarchGrammar: syntaxHighlighting,
