@@ -144,7 +144,7 @@ interface PreviewProps {
 }
 
 export default function Preview({darkMode}: PreviewProps) {
-  const [colorMode, setColorMode] = useState<ColorMode>(darkMode ? "dark" : "light");
+  const [colorMode] = useState<ColorMode>(darkMode ? "dark" : "light");
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -152,10 +152,6 @@ export default function Preview({darkMode}: PreviewProps) {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
   );
-
-  const onChange: ChangeEventHandler<HTMLSelectElement> = (evt) => {
-    setColorMode(evt.target.value as ColorMode);
-  };
 
   return (
     <div style={{ width: "100%", height: "400px" }}>
