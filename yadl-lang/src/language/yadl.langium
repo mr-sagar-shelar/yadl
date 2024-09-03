@@ -4,12 +4,12 @@ import "./atomic-design"
 import "./entity-relationship"
 
 entry Model:
-    (persons+=Person | greetings+=Greeting | entities+=Entity | atoms+=Atom | molecules+=Molecule | organisms+=Organism
-    | pages+=Page | applicationConfigs+=ApplicationConfig | enums+=Enum | paginations+=Pagination | relationships+=Relationship)*;
+    (entities+=Entity | atoms+=Atom | molecules+=Molecule | organisms+=Organism
+    | pages+=Page | applicationConfigs+=ApplicationConfig | enums+=Enum | paginations+=Pagination | relationships+=Relationship | elements+=AbstractElement)*;
 
-Person:
-    'person' name=ID;
 
-Greeting:
-    'Hello' person=[Person:ID] '!';
+AbstractElement:
+    Type;
 
+Type:
+    DataType;

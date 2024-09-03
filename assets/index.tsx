@@ -31,6 +31,7 @@ buildWorkerDefinition(
 interface AppState {
   ast?: DomainModelAstNode;
   diagnostics?: Diagnostic[];
+  userConfig: UserConfig;
 }
 
 class AppClass extends React.Component<{}, AppState> {
@@ -47,6 +48,7 @@ class AppClass extends React.Component<{}, AppState> {
     this.state = {
       ast: undefined,
       diagnostics: undefined,
+      userConfig: getUserConfig(`vs-${localStorage.getItem("theme")}`)
     };
   }
 
@@ -130,8 +132,6 @@ class AppClass extends React.Component<{}, AppState> {
       width: "100%",
     };
 
-    const userConfig = getUserConfig(`vs-${localStorage.getItem("theme")}`);
-
     return (
       <>
         <div className="grid xs:grid-cols-1 lg:grid-cols-2">
@@ -139,7 +139,7 @@ class AppClass extends React.Component<{}, AppState> {
             <MonacoEditorReactComp
               ref={this.monacoEditor}
               onLoad={this.onMonacoLoad}
-              userConfig={userConfig}
+              userConfig={this.state.userConfig}
               style={style}
             />
           </div>
@@ -156,7 +156,7 @@ class AppClass extends React.Component<{}, AppState> {
 const getUserConfig = (theme) => {
   let userConfig = createUserConfig(
     {
-      languageId: "helloworld",
+      languageId: "yadl",
       code: `// This is Instagram Example
     person John
   
