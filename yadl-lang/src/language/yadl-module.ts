@@ -2,6 +2,9 @@ import { type Module, inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { YadlGeneratedModule, YadlGeneratedSharedModule } from './generated/module.js';
 import { YadlValidator, registerValidationChecks } from './yadl-validator.js';
+import { YadlFormatter } from './yadl-formatter.js';
+import { YadlHoverProvider } from './yadl-hover-provider.js';
+
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -26,6 +29,10 @@ export type YadlServices = LangiumServices & YadlAddedServices
 export const YadlModule: Module<YadlServices, PartialLangiumServices & YadlAddedServices> = {
     validation: {
         YadlValidator: () => new YadlValidator()
+    },
+    lsp: {
+        Formatter: () => new YadlFormatter(),
+        HoverProvider: (services) => new YadlHoverProvider(services)
     }
 };
 
