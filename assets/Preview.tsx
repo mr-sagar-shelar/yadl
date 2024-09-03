@@ -139,8 +139,12 @@ const initialEdges: Edge[] = [
   },
 ];
 
-export default function App() {
-  const [colorMode, setColorMode] = useState<ColorMode>("dark");
+interface PreviewProps {
+  darkMode: boolean;
+}
+
+export default function Preview({darkMode}: PreviewProps) {
+  const [colorMode, setColorMode] = useState<ColorMode>(darkMode ? "dark" : "light");
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 

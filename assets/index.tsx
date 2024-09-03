@@ -33,6 +33,7 @@ interface AppState {
   ast?: DomainModelAstNode;
   diagnostics?: Diagnostic[];
   userConfig: UserConfig;
+  darkMode?: boolean;
 }
 
 class AppClass extends React.Component<{}, AppState> {
@@ -45,10 +46,24 @@ class AppClass extends React.Component<{}, AppState> {
     this.onDocumentChange = this.onDocumentChange.bind(this);
     this.monacoEditor = React.createRef();
 
+    let themeSwitch = document.querySelectorAll("[data-theme-switcher]");
+    let darkMode = (localStorage.getItem("theme") || "") == "dark";
+    const currentRef = this;
+    document.addEventListener("DOMContentLoaded", () => {
+      [].forEach.call(themeSwitch, function (ts) {
+        ts.addEventListener("click", () => {
+          currentRef.setState({
+            userConfig: getUserConfig(`vs-${ts.checked ? 'dark' : 'light'}`),      
+          });
+        });
+      });
+    });
+
     // set initial state
     this.state = {
       ast: undefined,
       diagnostics: undefined,
+      darkMode: darkMode,
       userConfig: getUserConfig(`vs-${localStorage.getItem("theme")}`),
     };
   }
