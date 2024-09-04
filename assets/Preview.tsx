@@ -52,12 +52,12 @@ const initialNodes: Node[] = [
   //   data: { label: "2" },
   //   type: "appleWatchSeries8",
   // },
-  // {
-  //   id: "4",
-  //   position: { x: 0, y: 200 },
-  //   data: { label: "2" },
-  //   type: "appleWatchUltra",
-  // },
+  {
+    id: "4",
+    position: { x: 0, y: 200 },
+    data: { label: "2" },
+    type: "appleWatchUltra",
+  },
   // {
   //   id: "5",
   //   position: { x: 0, y: 300 },
@@ -82,12 +82,12 @@ const initialNodes: Node[] = [
   //   data: { label: "2" },
   //   type: "iPhone14",
   // },
-  // {
-  //   id: "9",
-  //   position: { x: 0, y: 700 },
-  //   data: { label: "2" },
-  //   type: "iPhone14Pro",
-  // },
+  {
+    id: "9",
+    position: { x: 0, y: 700 },
+    data: { label: "2" },
+    type: "iPhone14Pro",
+  },
   // {
   //   id: "10",
   //   position: { x: 0, y: 800 },
