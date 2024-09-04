@@ -11,6 +11,7 @@ import {
 } from "@xyflow/react";
 import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
 import {initialNodes, initialEdges} from "./nodes/initialElements";
+import DownloadButton from './components/DownloadButton';
 
 interface PreviewProps {
   darkMode: boolean;
@@ -43,6 +44,7 @@ export default function Preview({ darkMode }: PreviewProps) {
       >
         <Background />
         <Controls />
+        <DownloadButton />
       </ReactFlow>
     </div>
   );

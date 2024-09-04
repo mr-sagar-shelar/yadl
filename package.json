@@ -50,6 +50,7 @@
     "@babel/preset-react": "^7.24.7",
     "@xyflow/react": "^12.2.0",
     "d3": "^7.8.5",
+    "html-to-image": "^1.11.11",
     "langium-ast-helper": "^0.1.2",
     "langium-website-core": "^1.0.0",
     "monaco-editor-workers": "~0.44.0"
