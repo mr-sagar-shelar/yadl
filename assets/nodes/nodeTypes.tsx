@@ -10,6 +10,7 @@ import ProDisplayXDR from "./devices/ProDisplayXDR";
 import SurfaceBook from "./devices/SurfaceBook";
 import SurfacePro from "./devices/SurfacePro";
 import SurfaceStudio from "./devices/SurfaceStudio";
+import TailwindNode from "./TailwindNode";
 
 export const nodeTypes = {
     appleWatchSeries8: AppleWatchSeries8,
@@ -24,5 +25,6 @@ export const nodeTypes = {
     surfaceBook: SurfaceBook,
     surfacePro: SurfacePro,
     surfaceStudio: SurfaceStudio,
+    tailwindNode: TailwindNode
   };
   

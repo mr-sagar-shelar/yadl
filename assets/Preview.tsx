@@ -1,7 +1,6 @@
 import React, { useCallback, useState, ChangeEventHandler } from "react";
 import {
   ReactFlow,
-  MiniMap,
   Controls,
   Background,
   useNodesState,
@@ -13,7 +12,7 @@ import {
   ColorMode,
   OnConnect,
 } from "@xyflow/react";
-import { nodeTypes} from "./nodes/nodeTypes";
+import { nodeTypes } from "./nodes/nodeTypes";
 
 const nodeDefaults = {
   sourcePosition: Position.Right,
@@ -52,12 +51,12 @@ const initialNodes: Node[] = [
   //   data: { label: "2" },
   //   type: "appleWatchSeries8",
   // },
-  {
-    id: "4",
-    position: { x: 0, y: 200 },
-    data: { label: "2" },
-    type: "appleWatchUltra",
-  },
+  // {
+  //   id: "4",
+  //   position: { x: 0, y: 200 },
+  //   data: { label: "2" },
+  //   type: "appleWatchUltra",
+  // },
   // {
   //   id: "5",
   //   position: { x: 0, y: 300 },
@@ -82,12 +81,12 @@ const initialNodes: Node[] = [
   //   data: { label: "2" },
   //   type: "iPhone14",
   // },
-  {
-    id: "9",
-    position: { x: 0, y: 700 },
-    data: { label: "2" },
-    type: "iPhone14Pro",
-  },
+  // {
+  //   id: "9",
+  //   position: { x: 0, y: 700 },
+  //   data: { label: "2" },
+  //   type: "iPhone14Pro",
+  // },
   // {
   //   id: "10",
   //   position: { x: 0, y: 800 },
@@ -118,6 +117,25 @@ const initialNodes: Node[] = [
   //   data: { label: "2" },
   //   type: "surfaceStudio",
   // },
+  {
+    id: "1",
+    type: "tailwindNode",
+    data: { name: "Jane Doe", job: "CEO", emoji: "😎" },
+    position: { x: 0, y: 50 },
+  },
+  {
+    id: "2",
+    type: "tailwindNode",
+    data: { name: "Tyler Weary", job: "Designer", emoji: "🤓" },
+
+    position: { x: -200, y: 200 },
+  },
+  {
+    id: "3",
+    type: "tailwindNode",
+    data: { name: "Kristi Price", job: "Developer", emoji: "🤩" },
+    position: { x: 200, y: 200 },
+  },
 ];
 
 const initialEdges: Edge[] = [
@@ -142,7 +160,7 @@ interface PreviewProps {
   darkMode: boolean;
 }
 
-export default function Preview({darkMode}: PreviewProps) {
+export default function Preview({ darkMode }: PreviewProps) {
   const [colorMode] = useState<ColorMode>(darkMode ? "dark" : "light");
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -164,7 +182,6 @@ export default function Preview({darkMode}: PreviewProps) {
         fitView
         nodeTypes={nodeTypes}
       >
-        <MiniMap />
         <Background />
         <Controls />
       </ReactFlow>
