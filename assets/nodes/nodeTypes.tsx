@@ -11,20 +11,36 @@ import SurfaceBook from "./devices/SurfaceBook";
 import SurfacePro from "./devices/SurfacePro";
 import SurfaceStudio from "./devices/SurfaceStudio";
 import TailwindNode from "./TailwindNode";
+import AnnotationNode from "./AnnotationNode";
+import ToolbarNode from "./ToolbarNode";
+import ResizerNode from "./ResizerNode";
+import CircleNode from "./CircleNode";
+import TextNode from "./TextNode";
+import ButtonEdge from "./ButtonEdge";
 
 export const nodeTypes = {
-    appleWatchSeries8: AppleWatchSeries8,
-    appleWatchUltra: AppleWatchUltra,
-    googlePixel6Pro: GooglePixel6Pro,
-    iMac: iMac,
-    iPadPro: iPadPro,
-    iPhone14: iPhone14,
-    iPhone14Pro: iPhone14Pro,
-    macbookPro: MacbookPro,
-    proDisplayXDR: ProDisplayXDR,
-    surfaceBook: SurfaceBook,
-    surfacePro: SurfacePro,
-    surfaceStudio: SurfaceStudio,
-    tailwindNode: TailwindNode
-  };
-  
+  appleWatchSeries8: AppleWatchSeries8,
+  appleWatchUltra: AppleWatchUltra,
+  googlePixel6Pro: GooglePixel6Pro,
+  iMac: iMac,
+  iPadPro: iPadPro,
+  iPhone14: iPhone14,
+  iPhone14Pro: iPhone14Pro,
+  macbookPro: MacbookPro,
+  proDisplayXDR: ProDisplayXDR,
+  surfaceBook: SurfaceBook,
+  surfacePro: SurfacePro,
+  surfaceStudio: SurfaceStudio,
+  tailwindNode: TailwindNode,
+  annotation: AnnotationNode,
+  tools: ToolbarNode,
+  resizer: ResizerNode,
+  circle: CircleNode,
+  textinput: TextNode,
+};
+
+export const edgeTypes = {
+  button: ButtonEdge,
+};
+
+export const nodeClassName = (node) => node.type;

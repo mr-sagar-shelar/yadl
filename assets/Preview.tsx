@@ -1,4 +1,4 @@
-import React, { useCallback, useState, ChangeEventHandler } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ReactFlow,
   Controls,
@@ -6,155 +6,11 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
-  Position,
-  Node,
-  Edge,
   ColorMode,
   OnConnect,
 } from "@xyflow/react";
-import { nodeTypes } from "./nodes/nodeTypes";
-
-const nodeDefaults = {
-  sourcePosition: Position.Right,
-  targetPosition: Position.Left,
-};
-
-const initialNodes: Node[] = [
-  {
-    id: "A",
-    type: "input",
-    position: { x: 0, y: 150 },
-    data: { label: "A" },
-    ...nodeDefaults,
-  },
-  {
-    id: "B",
-    position: { x: 250, y: 0 },
-    data: { label: "B" },
-    ...nodeDefaults,
-  },
-  {
-    id: "C",
-    position: { x: 250, y: 150 },
-    data: { label: "C" },
-    ...nodeDefaults,
-  },
-  {
-    id: "D",
-    position: { x: 250, y: 300 },
-    data: { label: "D" },
-    ...nodeDefaults,
-  },
-  // {
-  //   id: "3",
-  //   position: { x: -400, y: 200 },
-  //   data: { label: "2" },
-  //   type: "appleWatchSeries8",
-  // },
-  // {
-  //   id: "4",
-  //   position: { x: -320, y: 200 },
-  //   data: { label: "2" },
-  //   type: "appleWatchUltra",
-  // },
-  // {
-  //   id: "5",
-  //   position: { x: -250, y: 0 },
-  //   data: { label: "2" },
-  //   type: "googlePixel6Pro",
-  // },
-  // {
-  //   id: "6",
-  //   position: { x: 0, y: 400 },
-  //   data: { label: "2" },
-  //   type: "iMac",
-  // },
-  // {
-  //   id: "7",
-  //   position: { x: 0, y: 500 },
-  //   data: { label: "2" },
-  //   type: "iPadPro",
-  // },
-  // {
-  //   id: "8",
-  //   position: { x: 0, y: 600 },
-  //   data: { label: "2" },
-  //   type: "iPhone14",
-  // },
-  // {
-  //   id: "9",
-  //   position: { x: 0, y: 700 },
-  //   data: { label: "2" },
-  //   type: "iPhone14Pro",
-  // },
-  // {
-  //   id: "10",
-  //   position: { x: 0, y: 800 },
-  //   data: { label: "2" },
-  //   type: "macbookPro",
-  // },
-  // {
-  //   id: "11",
-  //   position: { x: 0, y: 900 },
-  //   data: { label: "2" },
-  //   type: "proDisplayXDR",
-  // },
-  // {
-  //   id: "12",
-  //   position: { x: 0, y: 1000 },
-  //   data: { label: "2" },
-  //   type: "surfaceBook",
-  // },
-  // {
-  //   id: "13",
-  //   position: { x: 0, y: 1100 },
-  //   data: { label: "2" },
-  //   type: "surfacePro",
-  // },
-  // {
-  //   id: "14",
-  //   position: { x: 0, y: 1200 },
-  //   data: { label: "2" },
-  //   type: "surfaceStudio",
-  // },
-  {
-    id: "T1",
-    type: "tailwindNode",
-    data: { name: "Jane Doe", job: "CEO", emoji: "😎" },
-    position: { x: 0, y: 50 },
-  },
-  {
-    id: "T2",
-    type: "tailwindNode",
-    data: { name: "Tyler Weary", job: "Designer", emoji: "🤓" },
-
-    position: { x: -200, y: 200 },
-  },
-  {
-    id: "T3",
-    type: "tailwindNode",
-    data: { name: "Kristi Price", job: "Developer", emoji: "🤩" },
-    position: { x: 200, y: 200 },
-  },
-];
-
-const initialEdges: Edge[] = [
-  {
-    id: "A-B",
-    source: "A",
-    target: "B",
-  },
-  {
-    id: "A-C",
-    source: "A",
-    target: "C",
-  },
-  {
-    id: "A-D",
-    source: "A",
-    target: "D",
-  },
-];
+import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
+import {initialNodes, initialEdges} from "./nodes/initialElements";
 
 interface PreviewProps {
   darkMode: boolean;
@@ -181,6 +37,9 @@ export default function Preview({ darkMode }: PreviewProps) {
         colorMode={colorMode}
         fitView
         nodeTypes={nodeTypes}
+        attributionPosition="top-right"
+        edgeTypes={edgeTypes}
+        className="overview"
       >
         <Background />
         <Controls />
