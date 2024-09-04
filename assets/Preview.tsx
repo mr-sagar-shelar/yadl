@@ -47,19 +47,19 @@ const initialNodes: Node[] = [
   },
   // {
   //   id: "3",
-  //   position: { x: 0, y: 100 },
+  //   position: { x: -400, y: 200 },
   //   data: { label: "2" },
   //   type: "appleWatchSeries8",
   // },
   // {
   //   id: "4",
-  //   position: { x: 0, y: 200 },
+  //   position: { x: -320, y: 200 },
   //   data: { label: "2" },
   //   type: "appleWatchUltra",
   // },
   // {
   //   id: "5",
-  //   position: { x: 0, y: 300 },
+  //   position: { x: -250, y: 0 },
   //   data: { label: "2" },
   //   type: "googlePixel6Pro",
   // },
@@ -118,20 +118,20 @@ const initialNodes: Node[] = [
   //   type: "surfaceStudio",
   // },
   {
-    id: "1",
+    id: "T1",
     type: "tailwindNode",
     data: { name: "Jane Doe", job: "CEO", emoji: "😎" },
     position: { x: 0, y: 50 },
   },
   {
-    id: "2",
+    id: "T2",
     type: "tailwindNode",
     data: { name: "Tyler Weary", job: "Designer", emoji: "🤓" },
 
     position: { x: -200, y: 200 },
   },
   {
-    id: "3",
+    id: "T3",
     type: "tailwindNode",
     data: { name: "Kristi Price", job: "Developer", emoji: "🤩" },
     position: { x: 200, y: 200 },
