@@ -5,7 +5,7 @@ export default memo(() => {
     <>
       <div className="device device-surface-studio">
         <div className="device-frame">
-          <img className="device-screen" src="/images/devices/bg-12.jpg" />
+          <img className="device-screen not-prose" src="/images/devices/bg-12.jpg" />
         </div>
         <div className="device-stripe"></div>
         <div className="device-header"></div>
