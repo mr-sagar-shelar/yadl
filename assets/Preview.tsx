@@ -12,6 +12,7 @@ import {
 import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
 import {initialNodes, initialEdges} from "./nodes/initialElements";
 import DownloadButton from './components/DownloadButton';
+import DownloadVideoButton from './components/DownloadVideoButton';
 
 interface PreviewProps {
   darkMode: boolean;
@@ -45,6 +46,7 @@ export default function Preview({ darkMode }: PreviewProps) {
         <Background />
         <Controls />
         <DownloadButton />
+        <DownloadVideoButton />
       </ReactFlow>
     </div>
   );
