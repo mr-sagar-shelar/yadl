@@ -68,6 +68,8 @@ jobs:
           npm run copy:monaco-workers
           npm run copy:reactflow:style
           npm run copy:syntax-highliter
+          npm run download:ffmpeg-assets
+          npm run copy:coi-serviceworker
 
       - name: Publish to GitHub Pages
         run: npm run build

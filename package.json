@@ -22,7 +22,9 @@
     "copy:syntax-highliter": "shx cp -f ./yadl-lang/src/syntaxes/yadl.monarch.ts ./assets/scripts/yadl.monarch.ts",
     "copy:reactflow:style": "shx cp -f ./node_modules/@xyflow/react/dist/style.css ./public/css/reactflow.css",
     "copy:libs:prepare": "shx mkdir -p ./public/libs/monaco-editor-workers/workers && shx mkdir -p ./public/css",
-    "copy:monaco-workers": "npm run copy:libs:prepare && shx cp -f ./node_modules/monaco-editor-workers/dist/index.* ./public/libs/monaco-editor-workers && shx cp -f ./node_modules/monaco-editor-workers/dist/workers/editorWorker-iife.js ./public/libs/monaco-editor-workers/workers"
+    "copy:monaco-workers": "npm run copy:libs:prepare && shx cp -f ./node_modules/monaco-editor-workers/dist/index.* ./public/libs/monaco-editor-workers && shx cp -f ./node_modules/monaco-editor-workers/dist/workers/editorWorker-iife.js ./public/libs/monaco-editor-workers/workers",
+    "download:ffmpeg-assets": "node ./scripts/downloadFFmpegAssets.js",
+    "copy:coi-serviceworker": "shx cp -f ./node_modules/coi-serviceworker/coi-serviceworker.js ./public/coi-serviceworker.js"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
@@ -48,12 +50,17 @@
     "@babel/cli": "^7.25.6",
     "@babel/core": "^7.25.2",
     "@babel/preset-react": "^7.24.7",
+    "@ffmpeg/core": "^0.12.6",
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
     "@xyflow/react": "^12.2.0",
+    "coi-serviceworker": "^0.1.7",
     "d3": "^7.8.5",
     "html-to-image": "^1.11.11",
     "langium-ast-helper": "^0.1.2",
     "langium-website-core": "^1.0.0",
-    "monaco-editor-workers": "~0.44.0"
+    "monaco-editor-workers": "~0.44.0",
+    "tar": "^7.4.3"
   },
   "workspaces": [
     "yadl-lang",
