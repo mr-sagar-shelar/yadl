@@ -17,6 +17,7 @@ import ResizerNode from "./ResizerNode";
 import CircleNode from "./CircleNode";
 import TextNode from "./TextNode";
 import ButtonEdge from "./ButtonEdge";
+import AnimatedSVGEdge from "./AnimatedSVGEdge";
 
 export const nodeTypes = {
   appleWatchSeries8: AppleWatchSeries8,
@@ -41,6 +42,7 @@ export const nodeTypes = {
 
 export const edgeTypes = {
   button: ButtonEdge,
+  animatedSvg: AnimatedSVGEdge,
 };
 
 export const nodeClassName = (node) => node.type;
