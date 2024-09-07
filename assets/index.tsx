@@ -14,12 +14,10 @@ import {
 } from "langium-ast-helper";
 import {
   DomainModelAstNode,
-  getMainTreeNode,
 } from "./domainmodel-tools";
 import syntaxHighlighting from "./scripts/yadl.monarch";
-
-import D3Tree from "./d3tree";
 import Preview from "Preview";
+import VideoRecorder from "./components/VideoRecorder";
 
 addMonacoStyles("monaco-styles-helper");
 
@@ -119,7 +117,7 @@ class AppClass extends React.Component<{}, AppState> {
     ) {
       return (
         <>
-          <D3Tree data={getMainTreeNode(ast)} />;
+          {/* <D3Tree data={getMainTreeNode(ast)} />; */}
           <Preview />
         </>
       );
@@ -163,6 +161,7 @@ class AppClass extends React.Component<{}, AppState> {
               style={style}
             />
           </div>
+          <VideoRecorder />
           <div>{this.state.ast && this.renderAST(this.state.ast)}</div>
         </div>
       </>
