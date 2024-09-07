@@ -26,7 +26,7 @@ function ResizerNode() {
     settings = mediaStream.getVideoTracks()[0].getSettings();
 
     mediaRecorder = new MediaRecorder(mediaStream, {
-      mimeType: 'video/webm; codecs="vp8, opus"',
+      mimeType: "video/webm\;codecs=vp9",
     });
     // mediaRecorder.addEventListener('dataavailable', (event) => {
     //   videoEl.srcObject = null;
@@ -34,22 +34,26 @@ function ResizerNode() {
     // });
     // mediaRecorder.start();
     mediaRecorder.addEventListener("dataavailable", async (event) => {
-      videoEl.srcObject = null;
-      videoEl.src = URL.createObjectURL(event.data);
+      // videoEl.srcObject = null;
+      // videoEl.src = URL.createObjectURL(event.data);
       // const duration = await getBlobDuration(event.data)
       // console.log(duration + ' seconds')
       // const fixedBlob = await fixWebmDuration(event.data, duration);
       // videoEl.src = URL.createObjectURL(fixedBlob);
-      blobSlice.push(event.data);
+
+      var data = event.data;
+      if (data && data.size > 0) {
+        blobSlice.push(data);
+      }
     });
     mediaRecorder.onstop = async () => {
-      // videoEl.srcObject = null;
       console.error(` $$$$ Stoppeding`);
-      const finalBlob = new Blob([...blobSlice]);
+      const finalBlob = new Blob([...blobSlice], { type: "video/webm\;codecs=vp9" });
       const duration = await getBlobDuration(finalBlob);
       console.log(duration + " seconds");
-      const fixedBlob = await fixWebmDuration(finalBlob, duration);
-      // videoEl.src = URL.createObjectURL(fixedBlob);
+      const fixedBlob = await fixWebmDuration(finalBlob, duration * 1000);
+      videoEl.srcObject = null;
+      videoEl.src = URL.createObjectURL(fixedBlob);
       // const fixBlob = await fixWebmDuration(new Blob([...blobSlice]));
     };
     mediaRecorder.start();
@@ -72,7 +76,7 @@ function ResizerNode() {
 
   const stopRecording = () => {
     mediaStream.getTracks().forEach((track) => track.stop());
-    // mediaRecorder.stop();
+    mediaRecorder.stop();
   };
 
   React.useEffect(() => {
