@@ -11,13 +11,27 @@ function ResizerNode() {
   let videoEl: HTMLVideoElement = null;
   let mediaRecorder: MediaRecorder = null;
   const mimeType = "video/webm;codecs=h264";
+  /*
+options = { mimeType: 'video/webm;codecs=avc1,opus'};   //904KB
+options = { mimeType: 'video/webm;codecs=h264,opus' };  //923KB
+options = { mimeType: 'video/webm;codecs=vp9,opus' };   //1951KB
+options = { mimeType: 'video/x-matroska;codecs=avc1' }; //917KB
+options = { mimeType: 'video/webm;codecs=vp8,opus' };   //2687KB
+options = { mimeType: 'video/webm;codecs=avc1' };       //917KB
+options = { mimeType: 'video/webm;codecs=h264' };       //919KB
+options = { mimeType: 'video/webm' };                   //906KB
+options = { mimeType: '' };      
+width: 2056,
+height: 1329,
+
+  */
 
   const startRecording = async () => {
     const blobSlice: BlobPart[] = [];
     mediaStream = await navigator.mediaDevices.getDisplayMedia({
       video: {
-        width: 1280,
-        height: 720,
+        width: 2056,
+        height: 1329,
         frameRate: 60,
       },
       audio: false,
