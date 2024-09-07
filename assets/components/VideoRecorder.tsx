@@ -16,6 +16,8 @@ function ResizerNode() {
     const blobSlice: BlobPart[] = [];
     mediaStream = await navigator.mediaDevices.getDisplayMedia({
       video: {
+        width: 1280,
+        height: 720,
         frameRate: 60,
       },
       audio: false,
@@ -49,7 +51,7 @@ function ResizerNode() {
     });
     mediaRecorder.onstop = async () => {
       console.error(` $$$$ Stoppeding`);
-      const finalBlob = new Blob([...blobSlice], { type: mimeType });
+      const finalBlob = new Blob([...blobSlice], { type: "video/webm" });
       const duration = await getBlobDuration(finalBlob);
       console.log(duration + " seconds");
       const fixedBlob = await fixWebmDuration(finalBlob, duration * 1000);
