@@ -20,7 +20,6 @@
 <p id="message"></p>
 
 <script>
-  if (!crossOriginIsolated) SharedArrayBuffer = ArrayBuffer;
   const { fetchFile } = FFmpegUtil;
   const { FFmpeg } = FFmpegWASM;
   let ffmpeg = null;
@@ -46,7 +45,10 @@
     await ffmpeg.exec(["-i", name, "output.mp4"]);
     console.timeEnd("exec");
     message.innerHTML = "Complete transcoding";
+    console.error(` $$$ Completed Execution: ${name}`);
     const data = await ffmpeg.readFile("output.mp4");
+
+    console.error(` $$$ Data FFMpeg: ${data}`);
 
     const video = document.getElementById("output-video");
     video.src = URL.createObjectURL(

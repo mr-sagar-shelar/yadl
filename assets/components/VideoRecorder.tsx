@@ -1,5 +1,9 @@
 import React from "react";
 import { memo } from "react";
+// import { FFmpeg } from '@ffmpeg/ffmpeg';
+// import { fetchFile, toBlobURL } from '@ffmpeg/util';
+// import { fixWebmDuration } from "@fix-webm-duration/fix";
+// import getBlobDuration from 'get-blob-duration'
 
 function ResizerNode() {
     let mediaStream: MediaStream = null;
@@ -8,9 +12,10 @@ function ResizerNode() {
     let mediaRecorder: MediaRecorder = null;
 
     const startRecording = async () => {
+        // const blobSlice: BlobPart[] = [];
         mediaStream = await navigator.mediaDevices.getDisplayMedia({
             video: {
-                frameRate: 60
+            frameRate: 60
             },
             audio: false,
             // @ts-ignore
@@ -20,16 +25,55 @@ function ResizerNode() {
         videoEl.srcObject = mediaStream;
         settings = mediaStream.getVideoTracks()[0].getSettings();
 
-        mediaRecorder = new MediaRecorder(mediaStream);
-        mediaRecorder.addEventListener('dataavailable', (event) => {
-            videoEl.srcObject = null;
-            videoEl.src = URL.createObjectURL(event.data);
+        mediaRecorder = new MediaRecorder(mediaStream, {
+          mimeType: 'video/webm; codecs="vp8, opus"'
         });
-        mediaRecorder.start();
+        mediaRecorder.addEventListener('dataavailable', (event) => {
+          videoEl.srcObject = null;
+          videoEl.src = URL.createObjectURL(event.data);
+      });
+      mediaRecorder.start();
+        // mediaRecorder.addEventListener('dataavailable', async (event) => {
+        //     // videoEl.srcObject = null;
+        //     // videoEl.src = URL.createObjectURL(event.data);
+        //     // const duration = await getBlobDuration(event.data)
+        //     // console.log(duration + ' seconds')
+        //     // const fixedBlob = await fixWebmDuration(event.data, duration);
+        //     // videoEl.src = URL.createObjectURL(fixedBlob);
+        //     blobSlice.push(event.data);
+        // });
+        // mediaRecorder.onstop = async () => {  
+        //   videoEl.srcObject = null;
+        //   console.error(` $$$$ Stoppeding`);
+        //   const finalBlob = new Blob([...blobSlice]);
+        //   const duration = await getBlobDuration(finalBlob);
+        //   console.log(duration + ' seconds')
+        //   const fixedBlob = await fixWebmDuration(finalBlob, duration);
+        //   videoEl.src = URL.createObjectURL(fixedBlob);
+        //   // const fixBlob = await fixWebmDuration(new Blob([...blobSlice]));
+        // };
+        // mediaRecorder.start();
+
+        ///////////////////////////
+        // mediaRecorder.onstop = async () => {
+        //   const duration = Date.now() - startTime;
+        //   const buggyBlob = new Blob(mediaParts, { type: "video/webm" });
+        //   const fixedBlob = await fixWebmDuration(buggyBlob, duration);
+        //   videoEl.srcObject = null;
+        //   videoEl.src = URL.createObjectURL(fixedBlob);
+        // };
+        // mediaRecorder.ondataavailable = (event) => {
+        //     var data = event.data;
+        //     if (data && data.size > 0) {
+        //         mediaParts.push(data);
+        //     }
+        // };
     }
 
     const stopRecording = () => {
         mediaStream.getTracks().forEach((track) => track.stop());
+        // mediaRecorder.stop();
+
     }
 
 
