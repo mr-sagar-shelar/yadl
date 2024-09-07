@@ -10,6 +10,7 @@ function ResizerNode() {
   let settings: MediaTrackSettings = null;
   let videoEl: HTMLVideoElement = null;
   let mediaRecorder: MediaRecorder = null;
+  const mimeType = "video/webm;codecs=h264";
 
   const startRecording = async () => {
     const blobSlice: BlobPart[] = [];
@@ -26,7 +27,7 @@ function ResizerNode() {
     settings = mediaStream.getVideoTracks()[0].getSettings();
 
     mediaRecorder = new MediaRecorder(mediaStream, {
-      mimeType: "video/webm\;codecs=vp9",
+      mimeType: mimeType,
     });
     // mediaRecorder.addEventListener('dataavailable', (event) => {
     //   videoEl.srcObject = null;
@@ -48,7 +49,7 @@ function ResizerNode() {
     });
     mediaRecorder.onstop = async () => {
       console.error(` $$$$ Stoppeding`);
-      const finalBlob = new Blob([...blobSlice], { type: "video/webm\;codecs=vp9" });
+      const finalBlob = new Blob([...blobSlice], { type: mimeType });
       const duration = await getBlobDuration(finalBlob);
       console.log(duration + " seconds");
       const fixedBlob = await fixWebmDuration(finalBlob, duration * 1000);
