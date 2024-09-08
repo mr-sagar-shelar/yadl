@@ -7,7 +7,11 @@ export default function EditorApp() {
   return (
     <div>
       <h1>Editor App</h1>
-      <Editor />
+      <Editor
+        onChange={(resp: DocumentChangeResponse) => {
+          console.log(` 1111 = ${JSON.stringify(resp, null, 2)}`);
+        }}
+      />
     </div>
   );
 }
