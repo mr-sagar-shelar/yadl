@@ -1,7 +1,5 @@
 import React from "react";
 import { memo } from "react";
-// import { FFmpeg } from '@ffmpeg/ffmpeg';
-// import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { fixWebmDuration } from "@fix-webm-duration/fix";
 import getBlobDuration from "get-blob-duration";
 
@@ -10,6 +8,7 @@ function ResizerNode() {
   let settings: MediaTrackSettings = null;
   let videoEl: HTMLVideoElement = null;
   let mediaRecorder: MediaRecorder = null;
+  let videoData: any = null;
   const mimeType = "video/webm;codecs=h264";
   /*
 options = { mimeType: 'video/webm;codecs=avc1,opus'};   //904KB
@@ -45,19 +44,7 @@ height: 1329,
     mediaRecorder = new MediaRecorder(mediaStream, {
       mimeType: mimeType,
     });
-    // mediaRecorder.addEventListener('dataavailable', (event) => {
-    //   videoEl.srcObject = null;
-    //   videoEl.src = URL.createObjectURL(event.data);
-    // });
-    // mediaRecorder.start();
     mediaRecorder.addEventListener("dataavailable", async (event) => {
-      // videoEl.srcObject = null;
-      // videoEl.src = URL.createObjectURL(event.data);
-      // const duration = await getBlobDuration(event.data)
-      // console.log(duration + ' seconds')
-      // const fixedBlob = await fixWebmDuration(event.data, duration);
-      // videoEl.src = URL.createObjectURL(fixedBlob);
-
       var data = event.data;
       if (data && data.size > 0) {
         blobSlice.push(data);
@@ -69,31 +56,50 @@ height: 1329,
       const duration = await getBlobDuration(finalBlob);
       console.log(duration + " seconds");
       const fixedBlob = await fixWebmDuration(finalBlob, duration * 1000);
+      videoData = finalBlob;
       videoEl.srcObject = null;
       videoEl.src = URL.createObjectURL(fixedBlob);
-      // const fixBlob = await fixWebmDuration(new Blob([...blobSlice]));
     };
     mediaRecorder.start();
-
-    ///////////////////////////
-    // mediaRecorder.onstop = async () => {
-    //   const duration = Date.now() - startTime;
-    //   const buggyBlob = new Blob(mediaParts, { type: "video/webm" });
-    //   const fixedBlob = await fixWebmDuration(buggyBlob, duration);
-    //   videoEl.srcObject = null;
-    //   videoEl.src = URL.createObjectURL(fixedBlob);
-    // };
-    // mediaRecorder.ondataavailable = (event) => {
-    //     var data = event.data;
-    //     if (data && data.size > 0) {
-    //         mediaParts.push(data);
-    //     }
-    // };
   };
 
   const stopRecording = () => {
     mediaStream.getTracks().forEach((track) => track.stop());
     mediaRecorder.stop();
+  };
+
+  const convertToMp4 = async () => {
+    const message = document.getElementById("message");
+    const { fetchFile } = FFmpegUtil;
+    const { FFmpeg } = FFmpegWASM;
+    let ffmpeg = null;
+    if (ffmpeg === null) {
+      ffmpeg = new FFmpeg();
+      ffmpeg.on("log", ({ message }) => {
+        console.log(message);
+      });
+      ffmpeg.on("progress", ({ progress, time }) => {
+        message.innerHTML = `${progress * 100} %, time: ${time / 1000000} s`;
+      });
+      await ffmpeg.load({
+        coreURL: "/assets/core-mt/package/dist/umd/ffmpeg-core.js",
+      });
+      message.innerHTML = `Loading complete...`;
+    }
+    const name = 'toConvert.webm'
+    await ffmpeg.writeFile(name, await fetchFile(URL.createObjectURL(videoData)));
+    message.innerHTML = "Start transcoding";
+    console.time("exec");
+    await ffmpeg.exec(["-i", name, "output.mp4"]);
+    console.timeEnd("exec");
+    message.innerHTML = "Complete transcoding";
+    console.error(` $$$ Completed Execution: ${name}`);
+    const data = await ffmpeg.readFile("output.mp4");
+    console.error(` $$$ Data FFMpeg: ${data}`);
+    const video = document.getElementById("output-video");
+    video.src = URL.createObjectURL(
+      new Blob([data.buffer], { type: "video/mp4" }),
+    );
   };
 
   React.useEffect(() => {
@@ -107,6 +113,9 @@ height: 1329,
       </button>
       <button className="btn btn-primary" onClick={stopRecording}>
         Stop Recording
+      </button>
+      <button className="btn btn-primary" onClick={convertToMp4}>
+        Convert to MP4
       </button>
       <video
         id="video-el"
