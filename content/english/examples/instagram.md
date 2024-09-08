@@ -10,4 +10,14 @@ tags: ["nextjs", "tailwind"]
 draft: false
 ---
 
-{{< editor >}}
+{{< editor code=`
+enum Country {
+  INDIA
+  CHINA
+}
+
+enum Country2 {
+  INDIA
+  CHINA
+}  
+    ` >}}

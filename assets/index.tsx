@@ -57,12 +57,18 @@ class AppClass extends React.Component<{}, AppState> {
       });
     });
 
+    let code = ''
+    const editorCodeElement = document.getElementById("editor-code");
+    if (editorCodeElement) {
+      code = editorCodeElement.dataset.code;
+    }
+
     // set initial state
     this.state = {
       ast: undefined,
       diagnostics: undefined,
       darkMode: darkMode,
-      userConfig: getUserConfig(`vs-${localStorage.getItem("theme")}`),
+      userConfig: getUserConfig(`vs-${localStorage.getItem("theme")}`, code),
     };
   }
 
@@ -169,22 +175,11 @@ class AppClass extends React.Component<{}, AppState> {
   }
 }
 
-const getUserConfig = (theme) => {
+const getUserConfig = (theme, code = "") => {
   let userConfig = createUserConfig(
     {
       languageId: "yadl",
-      code: `
-enum Country {
-  INDIA
-  CHINA
-}
-
-
-enum Country2 {
-  INDIA
-  CHINA
-}  
-    `,
+      code: code,
       worker: "/yadl-server-worker.js",
       monarchGrammar: syntaxHighlighting,
     },
