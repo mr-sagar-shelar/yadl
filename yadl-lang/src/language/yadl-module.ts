@@ -4,6 +4,7 @@ import { YadlGeneratedModule, YadlGeneratedSharedModule } from './generated/modu
 import { YadlValidator, registerValidationChecks } from './yadl-validator.js';
 import { YadlFormatter } from './yadl-formatter.js';
 import { YadlHoverProvider } from './yadl-hover-provider.js';
+import { DefaultTextEditService, TextEditService } from './text-edit-service.js'
 
 
 /**
@@ -12,6 +13,9 @@ import { YadlHoverProvider } from './yadl-hover-provider.js';
 export type YadlAddedServices = {
     validation: {
         YadlValidator: YadlValidator
+    },
+    lms: {
+        TextEditService: TextEditService,
     }
 }
 
@@ -32,7 +36,10 @@ export const YadlModule: Module<YadlServices, PartialLangiumServices & YadlAdded
     },
     lsp: {
         Formatter: () => new YadlFormatter(),
-        HoverProvider: (services) => new YadlHoverProvider(services)
+        HoverProvider: (services) => new YadlHoverProvider(services),
+    },
+    lms: {
+        TextEditService: (services) => new DefaultTextEditService(services)
     }
 };
 
