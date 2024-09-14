@@ -1,5 +1,5 @@
 import { type Module, inject } from 'langium';
-import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
+import { createDefaultModule, createDefaultSharedModule, DefaultRenameProvider, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { YadlGeneratedModule, YadlGeneratedSharedModule } from './generated/module.js';
 import { YadlValidator, registerValidationChecks } from './yadl-validator.js';
 import { YadlFormatter } from './yadl-formatter.js';
@@ -40,6 +40,7 @@ export const YadlModule: Module<YadlServices, PartialLangiumServices & YadlAdded
     lsp: {
         Formatter: () => new YadlFormatter(),
         HoverProvider: (services) => new YadlHoverProvider(services),
+        RenameProvider: (services) => new DefaultRenameProvider(services),
     },
     lms: {
         TextEditService: (services) => new DefaultTextEditService(services),
