@@ -12,9 +12,7 @@ import {
   Diagnostic,
   DocumentChangeResponse,
 } from "langium-ast-helper";
-import {
-  DomainModelAstNode,
-} from "./domainmodel-tools";
+import { DomainModelAstNode } from "./domainmodel-tools";
 import syntaxHighlighting from "./scripts/yadl.monarch";
 import Preview from "Preview";
 import VideoRecorder from "./components/VideoRecorder";
@@ -42,6 +40,7 @@ class AppClass extends React.Component<{}, AppState> {
     // bind 'this' ref for callbacks to maintain parent context
     this.onMonacoLoad = this.onMonacoLoad.bind(this);
     this.onDocumentChange = this.onDocumentChange.bind(this);
+    this.onLangiumRequest = this.onLangiumRequest.bind(this);
     this.monacoEditor = React.createRef();
 
     let themeSwitch = document.querySelectorAll("[data-theme-switcher]");
@@ -51,13 +50,13 @@ class AppClass extends React.Component<{}, AppState> {
       [].forEach.call(themeSwitch, function (ts) {
         ts.addEventListener("click", () => {
           currentRef.setState({
-            userConfig: getUserConfig(`vs-${ts.checked ? 'dark' : 'light'}`),      
+            userConfig: getUserConfig(`vs-${ts.checked ? "dark" : "light"}`),
           });
         });
       });
     });
 
-    let code = ''
+    let code = "";
     const editorCodeElement = document.getElementById("editor-code");
     if (editorCodeElement) {
       code = editorCodeElement.dataset.code;
@@ -94,8 +93,13 @@ class AppClass extends React.Component<{}, AppState> {
     this.monacoEditor.current.getEditorWrapper()?.getEditor()?.focus();
     // register to receive DocumentChange notifications
     lc.onNotification("browser/DocumentChange", this.onDocumentChange);
+    lc.onNotification("browser/sagar-from-webworker", this.onMessageFromWorker);
+    // lc.sendRequest("")
   }
 
+  onMessageFromWorker() {
+    console.error("Received message from worker");
+  }
   /**
    * Callback invoked when the document processed by the LS changes
    * Invoked on startup as well
@@ -109,6 +113,18 @@ class AppClass extends React.Component<{}, AppState> {
       ast: ast,
       diagnostics: resp.diagnostics,
     });
+  }
+
+  onLangiumRequest(resp: DocumentChangeResponse) {
+    console.error("$$$$$ Requesting langium server");
+    const lc = this.monacoEditor.current
+      ?.getEditorWrapper()
+      ?.getLanguageClient();
+    if (!lc) {
+      throw new Error("Could not get handle to Language Client on mount");
+    }
+    // lc.onNotification("browser/DocumentChange", this.onDocumentChange);
+    lc.sendNotification("browser/sagar-from-client");
   }
 
   renderAST(ast: DomainModelAstNode): JSX.Element {
@@ -169,6 +185,10 @@ class AppClass extends React.Component<{}, AppState> {
           </div>
           <VideoRecorder />
           <div>{this.state.ast && this.renderAST(this.state.ast)}</div>
+
+          <button className="btn btn-primary" onClick={this.onLangiumRequest}>
+            Send Request To Langium
+          </button>
         </div>
       </>
     );
