@@ -47,6 +47,8 @@ shared.workspace.DocumentBuilder.onBuildPhase(
   },
 );
 
-connection.onNotification("browser/sagar-from-client", () => {
-  connection.sendNotification("browser/sagar-from-webworker");
-});
+// connection.onNotification("browser/sagar-from-client", () => {
+//   connection.sendNotification("browser/sagar-from-webworker", { message: "From Main Browser"});
+
+//     // Yadl.lms.TextEditService.addAtom();
+// });

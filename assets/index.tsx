@@ -15,6 +15,7 @@ import {
 import { DomainModelAstNode } from "./domainmodel-tools";
 import syntaxHighlighting from "./scripts/yadl.monarch";
 import Preview from "Preview";
+import type { RenameParams, WorkspaceEdit } from 'vscode-languageserver'
 import VideoRecorder from "./components/VideoRecorder";
 
 addMonacoStyles("monaco-styles-helper");
@@ -41,6 +42,7 @@ class AppClass extends React.Component<{}, AppState> {
     this.onMonacoLoad = this.onMonacoLoad.bind(this);
     this.onDocumentChange = this.onDocumentChange.bind(this);
     this.onLangiumRequest = this.onLangiumRequest.bind(this);
+    this.onRenameRequest = this.onRenameRequest.bind(this);
     this.monacoEditor = React.createRef();
 
     let themeSwitch = document.querySelectorAll("[data-theme-switcher]");
@@ -97,8 +99,8 @@ class AppClass extends React.Component<{}, AppState> {
     // lc.sendRequest("")
   }
 
-  onMessageFromWorker() {
-    console.error("Received message from worker");
+  onMessageFromWorker(payload: any) {
+    console.error(`Received message from worker ${JSON.stringify(payload)}`);
   }
   /**
    * Callback invoked when the document processed by the LS changes
@@ -125,6 +127,26 @@ class AppClass extends React.Component<{}, AppState> {
     }
     // lc.onNotification("browser/DocumentChange", this.onDocumentChange);
     lc.sendNotification("browser/sagar-from-client");
+  }
+
+  onRenameRequest(resp: DocumentChangeResponse) {
+    console.error("$$$$$ Sending Rename Request");
+    const lc = this.monacoEditor.current
+      ?.getEditorWrapper()
+      ?.getLanguageClient();
+    if (!lc) {
+      throw new Error("Could not get handle to Language Client on mount");
+    }
+    const renameRequest = {
+      newName: "Sagar",
+      position: {
+        character: 4,
+        line: 4
+      },
+      // textDocument: "",
+      workDoneToken: "12323232"
+    } as RenameParams;
+    lc.sendNotification("textDocument.rename", renameRequest);
   }
 
   renderAST(ast: DomainModelAstNode): JSX.Element {
@@ -188,6 +210,10 @@ class AppClass extends React.Component<{}, AppState> {
 
           <button className="btn btn-primary" onClick={this.onLangiumRequest}>
             Send Request To Langium
+          </button>
+
+          <button className="btn btn-primary" onClick={this.onRenameRequest}>
+            Send Rename Request
           </button>
         </div>
       </>

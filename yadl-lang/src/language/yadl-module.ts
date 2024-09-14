@@ -1,5 +1,5 @@
 import { type Module, inject } from 'langium';
-import { createDefaultModule, createDefaultSharedModule, DefaultRenameProvider, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
+import { AbstractExecuteCommandHandler, createDefaultModule, createDefaultSharedModule, DefaultRenameProvider, ExecuteCommandAcceptor, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { YadlGeneratedModule, YadlGeneratedSharedModule } from './generated/module.js';
 import { YadlValidator, registerValidationChecks } from './yadl-validator.js';
 import { YadlFormatter } from './yadl-formatter.js';
@@ -48,6 +48,17 @@ export const YadlModule: Module<YadlServices, PartialLangiumServices & YadlAdded
     }
 };
 
+
+class MiniLogoCommandHandler extends AbstractExecuteCommandHandler {
+    registerCommands(acceptor: ExecuteCommandAcceptor): void {
+        acceptor('parseAndGenerate', args => {
+            // invoke generator on this data, and return response
+            // return parseAndGenerate(args[0]);
+            return undefined;
+        });
+    }
+}
+
 /**
  * Create the full set of services required by Langium.
  *
@@ -76,6 +87,7 @@ export function createYadlServices(context: DefaultSharedModuleContext): {
         YadlGeneratedModule,
         YadlModule
     );
+    shared.lsp.ExecuteCommandHandler = new MiniLogoCommandHandler();
     shared.ServiceRegistry.register(Yadl);
     registerValidationChecks(Yadl);
     if (!context.connection) {
