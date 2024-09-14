@@ -5,6 +5,8 @@ import { YadlValidator, registerValidationChecks } from './yadl-validator.js';
 import { YadlFormatter } from './yadl-formatter.js';
 import { YadlHoverProvider } from './yadl-hover-provider.js';
 import { DefaultTextEditService, TextEditService } from './text-edit-service.js'
+// import { LangiumModelServerFacade } from './facade.js';
+// import { TaskListLangiumModelServerFacade } from './task-list-facade.js';
 
 
 /**
@@ -16,6 +18,7 @@ export type YadlAddedServices = {
     },
     lms: {
         TextEditService: TextEditService,
+        // LangiumModelServerFacade: LangiumModelServerFacade,
     }
 }
 
@@ -39,7 +42,8 @@ export const YadlModule: Module<YadlServices, PartialLangiumServices & YadlAdded
         HoverProvider: (services) => new YadlHoverProvider(services),
     },
     lms: {
-        TextEditService: (services) => new DefaultTextEditService(services)
+        TextEditService: (services) => new DefaultTextEditService(services),
+        // LangiumModelServerFacade: (services) => new TaskListLangiumModelServerFacade(services),
     }
 };
 
