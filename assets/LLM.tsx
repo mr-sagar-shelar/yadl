@@ -1,55 +1,75 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { pipeline } from '@xenova/transformers';
+import ReactDOM from "react-dom";
+import { pipeline } from "@xenova/transformers";
 
-interface AppState {
-  darkMode?: boolean;
-  generatedText?: string;
-}
+let llmObject = undefined;
+export default function LLMApp() {
+  const [message, setMessage] = React.useState<string>("");
+  const [inputText, setInputText] = React.useState<string>("Write me a love poem about cheese.");
 
-class AppClass extends React.Component<{}, AppState> {
-  constructor(props: {} | Readonly<{}>) {
-    super(props);
+  React.useEffect(() => {
+    loadLLM();
+  }, []);
 
-    this.onLoadLLM = this.onLoadLLM.bind(this);
-
-    // set initial state
-    this.state = {
-      darkMode: true,
-    };
-
-  }
-
-  async onLoadLLM() {
-    this.setState({ generatedText: 'Generating...'});
-    let poet = await pipeline('text2text-generation', 'Xenova/LaMini-Flan-T5-783M');
-    let result = await poet('Write me a love poem about cheese.', {
-        max_new_tokens: 200,
-        temperature: 0.9,
-        repetition_penalty: 2.0,
-        no_repeat_ngram_size: 3,
-    });
-    this.setState({ generatedText: result[0].generated_text});
-  }
-
-
-  render() {
-    return (
-      <>
-        <div className="grid xs:grid-cols-1 lg:grid-cols-2">
-        <button className="btn btn-primary" onClick={this.onLoadLLM}>
-            Generate LLM
-        </button>
-
-        <h3>{this.state.generatedText}</h3>
-        </div>
-      </>
+  const loadLLM = async () => {
+    setMessage("Loading LLM...");
+    const LLMObject = await pipeline(
+      "text2text-generation",
+      "Xenova/LaMini-Flan-T5-783M",
     );
+    llmObject = LLMObject;
+    setMessage("");
+  };
+
+  const generateResult = async () => {
+    let result = await llmObject(inputText, {
+      max_new_tokens: 200,
+      temperature: 0.9,
+      repetition_penalty: 2.0,
+      no_repeat_ngram_size: 3,
+    });
+    setMessage(result[0].generated_text);
+  };
+
+  const onGenerateClick= () => {
+    setMessage("Generating...");
+    generateResult();
   }
+
+  return (
+    <div>
+      {llmObject && (
+        <>
+          <div className="mb-6">
+            <label htmlFor="name" className="form-label">
+              Input <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              className="form-input"
+              placeholder="Enter text for LLM"
+              type="text"
+              value={inputText}
+              onChange={(event) => {
+                setInputText(event.target.value);
+              }}
+            />
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={onGenerateClick}
+          >
+            Generate
+          </button>
+        </>
+      )}
+      <h3>{message}</h3>
+    </div>
+  );
 }
 
-// Render to #root
 ReactDOM.render(
-  React.createElement(AppClass, null),
+  React.createElement(LLMApp, null),
   document.getElementById("llm-renderer"),
 );
