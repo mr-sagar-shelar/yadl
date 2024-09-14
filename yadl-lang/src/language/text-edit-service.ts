@@ -1,6 +1,6 @@
 import type { AstNode, LangiumDocument, LangiumDocuments, ReferenceDescription, References } from 'langium'
 import { LangiumServices } from 'langium/lsp'
-import type { Connection, Position, WorkspaceEdit } from 'vscode-languageserver'
+import type { Connection, Position, RenameParams, WorkspaceEdit } from 'vscode-languageserver'
 
 import { ApplyWorkspaceEditRequest, TextEdit } from 'vscode-languageserver'
 import { URI } from 'vscode-uri'
@@ -22,7 +22,11 @@ export class DefaultTextEditService implements TextEditService {
         this.langiumDocuments = services.shared.workspace.LangiumDocuments
         this.connection = services.shared.lsp.Connection!
         services.shared.lsp.Connection!.onNotification("browser/sagar-from-client", () => {
-            services.shared.lsp.Connection!.sendNotification("browser/sagar-from-webworker", { message: "From Service"});
+            this.addAtom().then((resul) => {
+                return resul;
+            }).then((result2) => {
+                services.shared.lsp.Connection!.sendNotification("browser/sagar-from-webworker", { message: "Result 2", result: result2});
+            });
             //   Yadl.lms.TextEditService.addAtom();
           });
         // await services.lsp.CompletionProvider?.getCompletion(this.langiumDocuments.getOrCreateDocument(new URI("")), {
@@ -77,12 +81,17 @@ export class DefaultTextEditService implements TextEditService {
     //     return this.applySourceEdit(lmsDocument, textEdit, 'Create new task ')
     // }
 
-    public async addAtom(): Promise<void> {
-        const lmsDocument = await this.langiumDocuments.getOrCreateDocument(URI.parse("")).then(document =>{
-            return document;
-        });
-        const textEdit = this.computeTaskCreation(lmsDocument)
-        this.applySourceEdit(SourceEdit.ofSingleEdit(lmsDocument.uri, textEdit),"add atom");
+    public async addAtom(): Promise<ModificationResult> {
+        const lmsDocument = await this.langiumDocuments.createDocument(URI.file("inmemory://model/1"), "\n\n datatype INT");
+        // const lmsDocument = await this.langiumDocuments.getOrCreateDocument(URI.file("inmemory://model/1")).then(document =>{
+        //     return document;
+        // });
+        this.connection.sendNotification("browser/sagar-from-webworker", { message: `LMS Doc`, result: lmsDocument.textDocument});
+        const textEdit = this.computeTaskCreation(lmsDocument);
+        this.connection.sendNotification("browser/sagar-from-webworker", { message: `TextEdit Operation`, result: textEdit});
+        const newSourceEdit = SourceEdit.ofSingleEdit(lmsDocument.uri, textEdit);
+        newSourceEdit.add(lmsDocument.uri,textEdit);
+        return this.applySourceEdit(newSourceEdit,"add atom");
         
         // this.applySourceEdit(lmsDocument, textEdit, 'Create new task ')
     }
@@ -96,8 +105,8 @@ export class DefaultTextEditService implements TextEditService {
 
     private computeTaskCreation(lmsDocument: LangiumDocument): TextEdit {
 
-        let prefix = ''
-        let suffix = ''
+        let prefix = '\n'
+        let suffix = '\n'
         // const parsedTasks = lmsDocument.parseResult.value.tasks
         // const parsedTasks = lmsDocument.parseResult;
         let position: Position = { line: 0, character: 0 }
@@ -135,7 +144,11 @@ export class DefaultTextEditService implements TextEditService {
         //     //     lmsDocument.hasImmediateChanges = true
         //     // }
         // }
-        return this.connection.sendRequest(ApplyWorkspaceEditRequest.type,
+        this.connection.sendNotification("browser/sagar-from-webworker", { message: `SourceEdit=${JSON.stringify(sourceEdit)}`, result: sourceEdit});
+        const renameParams = { newName: "sagar", position: { character: 0, line: 0}} as RenameParams;
+        this.connection.sendRequest("textDocument.rename", renameParams)
+
+            return this.connection.sendRequest(ApplyWorkspaceEditRequest.type,
             { label, edit: sourceEdit.toWorkspaceEdit() }
         ).then(editResult => editResult.applied
             ? ModificationResult.successful()
@@ -143,9 +156,11 @@ export class DefaultTextEditService implements TextEditService {
         ).then(editingResult => {
             if (editingResult.successful) {
                 console.debug(label)
+                this.connection.sendNotification("browser/sagar-from-webworker", { message: `Success=${label}`, result: label});
             } 
             return editingResult
         }, failure => {
+            this.connection.sendNotification("browser/sagar-from-webworker", { message: `Failure=${label}`, result: label});
             return failure
         })
     }

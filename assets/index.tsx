@@ -100,7 +100,7 @@ class AppClass extends React.Component<{}, AppState> {
   }
 
   onMessageFromWorker(payload: any) {
-    console.error(`Received message from worker ${JSON.stringify(payload)}`);
+    console.error(`Received message from worker ${JSON.stringify(payload, null, 2)}`);
   }
   /**
    * Callback invoked when the document processed by the LS changes
