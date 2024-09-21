@@ -6,30 +6,35 @@ export function getMainTreeNode(ast: AstNode): YadlModelAstNode {
 
   const astNode = getYadlModelAst(ast as YadlModelAstNode);
 
-  console.error(JSON.stringify(astNode.enums.length, null, 2));
+//   console.error(JSON.stringify(astNode.enums.length, null, 2));
 
-  return astNode;
 
-  //   const getEnumTypeTreeNode = (d: Enums): TreeNode => {
-  //     return {
-  //       ...d,
-  //       children: [],
-  //     };
-  //   };
+    const getEnumTypeTreeNode = (d: Enums) : Enums => {
+      return {
+        name: d.name, 
+        $type: "Enum",
+        // children: [],
+      };
+    };
 
-  //   const enums = astNode.enums.flatMap((e) => getEnumTypeTreeNode(e));
+    const enums = astNode.enums.flatMap((e) => getEnumTypeTreeNode(e));
+
+    // console.error(JSON.stringify(enums, null, 2));
+    // console.error(` $$$$ Enums: ${JSON.stringify(enums, null, 2)}`);
   //   const children: TreeNode[] = [];
 
   //   if (enums.length > 0) {
   //     children.push({ name: "Enum", $type: "Enum", children: enums });
   //   }
 
-  //   return {
-  //     name: astNode.$type,
-  //     $type: astNode.$type,
-  //     // children: children,
-  //     children: [],
-  //   };
+    return {
+      name: astNode.$type,
+      $type: astNode.$type,
+      enums: enums,
+    //   children: [],
+    };
+//   return astNode;
+
 }
 
 /**

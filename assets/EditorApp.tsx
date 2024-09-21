@@ -14,9 +14,11 @@ export default function EditorApp() {
       <h3>Editor App</h3>
       <Editor
         onChange={(resp: DocumentChangeResponse) => {
+          // console.error(resp.content)
           const ast = deserializeAST(resp.content) as YadlModelAstNode;
           const deserializedContent = getMainTreeNode(ast);
-          // console.log(` $$$$ AST = ${ast}`);
+          console.log(` $$$$ AST = ${JSON.stringify(deserializedContent, null, 2)}`);
+          // console.log(` $$$$ AST = ${JSON.stringify(ast.enums)}`);
           // console.log(` $$$$ AST = ${JSON.stringify(getMainTreeNode(resp), null, 2)}`);
         }}
       />
