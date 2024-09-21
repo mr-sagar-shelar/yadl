@@ -1,6 +1,11 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import Editor from "./components/Editor";
+import {
+  deserializeAST,
+  DocumentChangeResponse,
+} from "langium-ast-helper";
+import { getMainTreeNode } from "utils/YADLDeserializer";
 
 export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
@@ -9,7 +14,9 @@ export default function EditorApp() {
       <h3>Editor App</h3>
       <Editor
         onChange={(resp: DocumentChangeResponse) => {
-          console.log(` 1111 = ${JSON.stringify(resp, null, 2)}`);
+          const ast = deserializeAST(resp.content) as DomainModelAstNode;
+          // console.log(` $$$$ AST = ${ast}`);
+          console.log(` $$$$ AST = ${JSON.stringify(getMainTreeNode(resp), null, 2)}`);
         }}
       />
     </div>

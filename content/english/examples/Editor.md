@@ -11,6 +11,12 @@ draft: false
 ---
 
 {{< yadlEditor code=`
+
+enum Country {
+  INDIA
+  CHINA
+}
+
 icon angular {
     position {
         x: 20 y: 20
