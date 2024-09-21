@@ -9,7 +9,20 @@ export const setupConfigClassic = (): UserConfig => {
             editorAppConfig: {
                 $type: 'classic',
                 languageId: 'yadl',
-                code: `// YADL is running in the web!`,
+                code: `// YADL is running in the web!
+icon angular {
+    position {
+        x: 20 y: 20
+    }
+}
+
+icon react
+box "YADL" [icon: angular] {
+    position {
+        x: 200 y: 20
+    }
+}
+`,
                 useDiffEditor: false,
                 languageExtensionConfig: { id: 'langium' },
                 languageDef: monarchSyntax,

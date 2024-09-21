@@ -3,6 +3,7 @@ import "./common"
 Entity:
     'entity' name=ID ('extends' superType=[Entity:QualifiedName])? '{'
         (fields+=Field)+
+        (postion=Position)?
     '}';
 
 Field:

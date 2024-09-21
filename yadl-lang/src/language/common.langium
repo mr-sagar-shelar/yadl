@@ -1,3 +1,9 @@
+Position:
+    'position' '{'
+        'x:' x=NUMBER
+        'y:' y=NUMBER 
+    '}';
+
 
 QualifiedName returns string:
     ID ('.' ID)*;
