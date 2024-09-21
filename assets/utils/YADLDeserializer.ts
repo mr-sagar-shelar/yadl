@@ -15,6 +15,11 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
     return {
       icon: i.icon,
       $type: "Icon",
+      position: {
+        $type: "Position",
+        x: i.position?.x || 0,
+        y: i.position?.y || 0,
+      },
     };
   });
 
@@ -51,9 +56,16 @@ export interface Enums extends YadlModelElement {
   $type: string;
 }
 
+export interface Position {
+  $type: string;
+  x: number;
+  y: number;
+}
+
 export interface Icon {
   $type: string;
   icon: string;
+  position?: Position;
 }
 
 export interface YadlModelElement {

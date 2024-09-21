@@ -2,7 +2,7 @@ import "./common"
 
 Icon:
     'icon' icon=IconType ('{'
-        (postion=Position)?
+        (position=Position)?
     '}')?;
 
 IconType returns string:
@@ -11,5 +11,5 @@ IconType returns string:
 
 Box:
     'box' (label=STRING)? ('[' 'icon:'icon=IconType ']')? ('{'
-        (postion=Position)?
+        (position=Position)?
     '}')?;
