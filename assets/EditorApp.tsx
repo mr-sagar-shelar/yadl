@@ -6,7 +6,7 @@ export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
   return (
     <div>
-      <h1>Editor App</h1>
+      <h3>Editor App</h3>
       <Editor
         onChange={(resp: DocumentChangeResponse) => {
           console.log(` 1111 = ${JSON.stringify(resp, null, 2)}`);

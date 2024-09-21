@@ -28,15 +28,21 @@ export default function Editor(props: EditorProps) {
   const { onChange } = props;
 
   React.useEffect(() => {
+    let code = "";
+    const editorCodeElement = document.getElementById("editor-code");
+    if (editorCodeElement) {
+      code = editorCodeElement.dataset.code;
+    }
     const userConfig = createUserConfig(
       {
         languageId: "yadl",
-        code: "",
+        code: code,
         worker: "/yadl-server-worker.js",
         monarchGrammar: syntaxHighlighting,
       },
       "vs-dark",
     );
+    
     setUserConfig(userConfig);
   }, []);
 

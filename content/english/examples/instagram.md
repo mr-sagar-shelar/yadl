@@ -20,4 +20,17 @@ enum Country2 {
   INDIA
   CHINA
 }  
-    ` >}}
+
+icon angular {
+    position {
+        x: 20 y: 20
+    }
+}
+
+icon react
+box "YADL" [icon: angular] {
+    position {
+        x: 200 y: 20
+    }
+}
+` >}}

@@ -11,13 +11,16 @@ draft: false
 ---
 
 {{< yadlEditor code=`
-enum Country {
-  INDIA
-  CHINA
+icon angular {
+    position {
+        x: 20 y: 20
+    }
 }
 
-enum Country2 {
-  INDIA
-  CHINA
-}  
-    ` >}}
+icon react
+box "YADL" [icon: angular] {
+    position {
+        x: 200 y: 20
+    }
+}
+` >}}
