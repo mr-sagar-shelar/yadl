@@ -17,7 +17,8 @@ export default function EditorApp() {
           console.error(JSON.parse(resp.content))
           const ast = deserializeAST(resp.content) as YadlModelAstNode;
           const deserializedContent = getYADLNodes(ast);
-          console.log(` $$$$ AST = ${JSON.stringify(deserializedContent, null, 2)}`);
+          console.log(deserializedContent);
+          // console.log(` $$$$ AST = ${JSON.stringify(deserializedContent, null, 2)}`);
           // console.log(` $$$$ AST = ${JSON.stringify(ast.enums)}`);
           // console.log(` $$$$ AST = ${JSON.stringify(getYADLNodes(resp), null, 2)}`);
         }}

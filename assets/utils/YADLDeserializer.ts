@@ -22,12 +22,25 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       },
     };
   });
+  const boxes = astNode.boxes.flatMap((b: Box) => {
+    return {
+      icon: b.icon,
+      label: b.label,
+      $type: "Box",
+      position: {
+        $type: "Position",
+        x: b.position?.x || 0,
+        y: b.position?.y || 0,
+      },
+    };
+  });
 
   return {
     name: astNode.$type,
     $type: astNode.$type,
     enums: enums,
     icons: icons,
+    boxes: boxes
   };
 }
 
@@ -42,6 +55,7 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
       (e) => e.$type === "Enum",
     ) as Enums[],
     icons: (ast.icons as Icon[])?.filter((e) => e.$type === "Icon") as Icon[],
+    boxes: (ast.boxes as Box[])?.filter((e) => e.$type === "Box") as Box[],
   };
 }
 
@@ -50,6 +64,7 @@ export interface YadlModelAstNode extends AstNode, YadlModelElement {
   $type: "YadlModel";
   enums: Enums[];
   icons: Icon[];
+  boxes: Box[];
 }
 
 export interface Enums extends YadlModelElement {
@@ -67,6 +82,13 @@ export interface Icon {
   icon: string;
   position?: Position;
 }
+
+export interface Box {
+    $type: string;
+    icon: string;
+    label: string;
+    position?: Position;
+  }
 
 export interface YadlModelElement {
   $type: string;
