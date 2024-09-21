@@ -1,5 +1,5 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
-import type { YadlAstType, Person, Model } from './generated/ast.js';
+import type { YadlAstType, Person, YadlModel } from './generated/ast.js';
 import type { YadlServices } from './yadl-module.js';
 
 /**
@@ -10,7 +10,7 @@ export function registerValidationChecks(services: YadlServices) {
     const validator = services.validation.YadlValidator;
     const checks: ValidationChecks<YadlAstType> = {
         Person: validator.checkPersonStartsWithCapital,
-        Model: [
+        YadlModel: [
             validator.checkPersonAreGreetedAtMostOnce,
             validator.checkUniqueEntityName,
             validator.checkUniqueAtomName,
@@ -37,7 +37,7 @@ export class YadlValidator {
     }
 
     checkPersonAreGreetedAtMostOnce(
-        model: Model,
+        model: YadlModel,
         accept: ValidationAcceptor
       ): void {
         //create a multi-counter variable using a map
@@ -68,7 +68,7 @@ export class YadlValidator {
         });
       }
     
-      checkUniqueEntityName(model: Model, accept: ValidationAcceptor): void {
+      checkUniqueEntityName(model: YadlModel, accept: ValidationAcceptor): void {
         //create a multi-counter variable using a map
         const counts = new Map<string, number>();
         //initialize the counter for each person to zero
@@ -94,7 +94,7 @@ export class YadlValidator {
         });
       }
     
-      checkUniqueAtomName(model: Model, accept: ValidationAcceptor): void {
+      checkUniqueAtomName(model: YadlModel, accept: ValidationAcceptor): void {
         //create a multi-counter variable using a map
         const counts = new Map<string, number>();
         //initialize the counter for each person to zero
@@ -120,7 +120,7 @@ export class YadlValidator {
         });
       }
     
-      checkUniqueMoleculeName(model: Model, accept: ValidationAcceptor): void {
+      checkUniqueMoleculeName(model: YadlModel, accept: ValidationAcceptor): void {
         //create a multi-counter variable using a map
         const counts = new Map<string, number>();
         //initialize the counter for each person to zero
@@ -146,7 +146,7 @@ export class YadlValidator {
         });
       }
     
-      checkUniqueOrganismName(model: Model, accept: ValidationAcceptor): void {
+      checkUniqueOrganismName(model: YadlModel, accept: ValidationAcceptor): void {
         //create a multi-counter variable using a map
         const counts = new Map<string, number>();
         //initialize the counter for each person to zero
@@ -172,7 +172,7 @@ export class YadlValidator {
         });
       }
     
-      checkUniquePageName(model: Model, accept: ValidationAcceptor): void {
+      checkUniquePageName(model: YadlModel, accept: ValidationAcceptor): void {
         //create a multi-counter variable using a map
         const counts = new Map<string, number>();
         //initialize the counter for each person to zero
