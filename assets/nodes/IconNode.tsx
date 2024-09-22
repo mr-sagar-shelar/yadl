@@ -6,13 +6,16 @@ import { IconNames } from "utils/IconNames";
 interface IconNodeProps {
   data: {
     icon: string;
+    width?: number;
+    height?: number;
   };
 }
 function IconNode(props: IconNodeProps) {
-  const Icon = ICONS[IconNames[props.data.icon]];
+  const {data} = props;
+  const Icon = ICONS[IconNames[data.icon]];
   return (
     <div>
-      <Icon width={100} height={100} />
+      <Icon width={data.width|| 100} height={data.height|| 100} />
       <Handle
         type="target"
         position={Position.Top}
