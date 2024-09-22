@@ -38,6 +38,11 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
     [setEdges],
   );
 
+  React.useEffect(() => {
+    setNodes(initialNodes);
+    setEdges(initialEdges);
+  },[initialNodes, initialEdges]);
+
   return (
     <div style={{ width: "70vw", height: "400px" }}>
       <ReactFlow
