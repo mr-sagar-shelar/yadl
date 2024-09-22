@@ -3,12 +3,13 @@ import ReactDOM from "react-dom";
 import Editor from "./components/Editor";
 import { deserializeAST, DocumentChangeResponse } from "langium-ast-helper";
 import { getYADLNodes, YadlModelAstNode } from "utils/YADLDeserializer";
-import * as ICONS from "./svgIcons/index";
-import { IconNames } from "utils/IconNames";
+// import * as ICONS from "./svgIcons/index";
+// import { IconNames } from "utils/IconNames";
+import ReactFlowPreview from "./ReactFlowPreview";
 
 export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
-  const Icon = ICONS[IconNames["godot-light"]];
+  // const Icon = ICONS[IconNames["godot-light"]];
   let running = false;
   let timeout: number | null = null;
   return (
@@ -42,7 +43,9 @@ export default function EditorApp() {
           // console.log(` $$$$ AST = ${JSON.stringify(getYADLNodes(resp), null, 2)}`);
         }}
       />
-      <Icon width={100} height={100} />
+      
+      <ReactFlowPreview />
+      {/* <Icon width={100} height={100} /> */}
     </div>
   );
 }
