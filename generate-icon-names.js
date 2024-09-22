@@ -3,7 +3,7 @@ const path = require("path");
 
 let allIcons = [];
 let allIndexPaths = "";
-
+let iconNames = [];
 const getIndexFiles = function (dirPath, arrayOfFiles) {
   files = fs.readdirSync(dirPath);
   arrayOfFiles = arrayOfFiles || [];
@@ -50,12 +50,28 @@ outputStream.write("export const IconNames = {\n")
 allIcons.map((iconPath) => {
   let componentName = iconPath.substring(20);
   componentName = componentName.substring(0, componentName.indexOf("}") - 1);
-  const fullComponentName = `"${toKebabCase(componentName)}": "${componentName}",`;
-  // console.log(fullComponentName);
+  const kebabName = toKebabCase(componentName);
+  const fullComponentName = `"${kebabName}": "${componentName}",`;
+  // console.log();
+  iconNames.push(`'${kebabName}'`)
   outputStream.write(fullComponentName + "\n");
 });
 outputStream.write("};\n");
 
+const langiumIconTypesWriter = fs.createWriteStream("./yadl-lang/src/language/iconType.langium", { encoding: "utf8" });
+const preText = 
+`import "./common"
+
+Icon:
+    'icon' icon=IconType ('{'
+        (position=Position)?
+    '}')?;
+
+IconType returns string:
+    `;
+langiumIconTypesWriter.write(preText)
+langiumIconTypesWriter.write(iconNames.join(" | "))
+langiumIconTypesWriter.write(";\n");
 
 // const input_path = "./assets/svgIcons/skill-icons/index.ts";
 // const output_path = "./assets/utils/IconNames.ts";
