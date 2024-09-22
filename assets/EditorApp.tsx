@@ -11,7 +11,7 @@ import { IconNames } from "utils/IconNames";
 
 export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
-  const Icon = ICONS[IconNames["p-5-js"]];
+  const Icon = ICONS[IconNames["anaconda-light"]];
   return (
     <div>
       <h3>Editor App</h3>
