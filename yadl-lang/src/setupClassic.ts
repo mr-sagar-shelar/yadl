@@ -10,14 +10,14 @@ export const setupConfigClassic = (): UserConfig => {
                 $type: 'classic',
                 languageId: 'yadl',
                 code: `// YADL is running in the web!
-icon angular {
+icon angular-dark {
     position {
         x: 20 y: 20
     }
 }
 
-icon react
-box "YADL" [icon: angular] {
+icon react-dark
+box "YADL" [icon: mongo-db] {
     position {
         x: 200 y: 20
     }

@@ -23,7 +23,6 @@ const getIndexFiles = function (dirPath, arrayOfFiles) {
   return arrayOfFiles;
 };
 
-
 const toKebabCase = (str) =>
   str &&
   str
@@ -34,8 +33,10 @@ const toKebabCase = (str) =>
 const indexFilePaths = getIndexFiles("./assets/svgIcons");
 // console.log(`AllPaths = ${allIndexPaths}`);
 
-const indexOutputStream = fs.createWriteStream("./assets/svgIcons/index.ts", { encoding: "utf8" });
-indexOutputStream.write(allIndexPaths)
+const indexOutputStream = fs.createWriteStream("./assets/svgIcons/index.ts", {
+  encoding: "utf8",
+});
+indexOutputStream.write(allIndexPaths);
 indexOutputStream.write("\n");
 
 // console.log(indexFilePaths);
@@ -45,32 +46,64 @@ indexFilePaths.map((filePath) => {
 });
 // console.log(allIcons);
 
-const outputStream = fs.createWriteStream("./assets/utils/IconNames.ts", { encoding: "utf8" });
-outputStream.write("export const IconNames = {\n")
+const outputStream = fs.createWriteStream("./assets/utils/IconNames.ts", {
+  encoding: "utf8",
+});
+outputStream.write("export const IconNames = {\n");
 allIcons.map((iconPath) => {
   let componentName = iconPath.substring(20);
   componentName = componentName.substring(0, componentName.indexOf("}") - 1);
   const kebabName = toKebabCase(componentName);
   const fullComponentName = `"${kebabName}": "${componentName}",`;
   // console.log();
-  iconNames.push(`'${kebabName}'`)
+  if (kebabName != "") {
+    iconNames.push(`'${kebabName}'`);
+  }
   outputStream.write(fullComponentName + "\n");
 });
 outputStream.write("};\n");
 
-const langiumIconTypesWriter = fs.createWriteStream("./yadl-lang/src/language/iconType.langium", { encoding: "utf8" });
-const preText = 
-`import "./common"
-
-Icon:
-    'icon' icon=IconType ('{'
-        (position=Position)?
-    '}')?;
+const langiumIconTypesWriter = fs.createWriteStream(
+  "./yadl-lang/src/language/iconType.langium",
+  { encoding: "utf8" },
+);
+const preText = `import "./common"
 
 IconType returns string:
     `;
-langiumIconTypesWriter.write(preText)
-langiumIconTypesWriter.write(iconNames.join(" | "))
+langiumIconTypesWriter.write(preText);
+
+let count = 0;
+let totalIconTypes = 0;
+iconNames.map((iconName) => {
+  if (count >= 255) {
+    console.error(
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
+    );
+    count = 0;
+    totalIconTypes++;
+
+    langiumIconTypesWriter.write(`;\n\nIconType${totalIconTypes+1} returns string:\n\t`);
+  }
+  langiumIconTypesWriter.write(`${iconName} |`);
+  // console.error(`${iconName} |`);
+  count++;
+});
+
+// langiumIconTypesWriter.write(iconNames.join(" | "));
+let iconsAvailable = "(";
+for (i = 0; i <= totalIconTypes; i++) {
+  iconsAvailable = `${iconsAvailable}IconType${i} |`
+}
+iconsAvailable += `)`;
+console.error(iconsAvailable)
+
+langiumIconTypesWriter.write(
+`\n\nIcon:
+    'icon' icon=${iconsAvailable} ('{'
+        (position=Position)?
+    '}')?;
+`);
 langiumIconTypesWriter.write(";\n");
 
 // const input_path = "./assets/svgIcons/skill-icons/index.ts";
