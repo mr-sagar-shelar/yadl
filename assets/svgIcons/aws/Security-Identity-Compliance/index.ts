@@ -1,7 +1,6 @@
 export { default as Artifact } from "./artifact";
 export { default as AuditManager } from "./audit-manager";
 export { default as CertificateManager } from "./certificate-manager";
-export { default as CloudDirectory } from "./cloud-directory";
 export { default as CloudHsm } from "./cloud-hsm";
 export { default as Cognito } from "./cognito";
 export { default as Detective } from "./detective";

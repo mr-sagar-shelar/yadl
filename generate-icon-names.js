@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
+let allIcons = [];
+let allIndexPaths = "";
+
 const getIndexFiles = function (dirPath, arrayOfFiles) {
   files = fs.readdirSync(dirPath);
   arrayOfFiles = arrayOfFiles || [];
@@ -11,13 +14,15 @@ const getIndexFiles = function (dirPath, arrayOfFiles) {
       if (file === "index.ts") {
         const filePath = path.join(__dirname, dirPath, "/", file);
         // console.log(filePath);
+        // console.log(`export * from './${path.join(dirPath, "/", file).substring(16)}';`);
+        allIndexPaths = `${allIndexPaths}\nexport * from './${path.join(dirPath, "/", file).substring(16)}';`;
         arrayOfFiles.push(filePath);
       }
     }
   });
-
   return arrayOfFiles;
 };
+
 
 const toKebabCase = (str) =>
   str &&
@@ -27,16 +32,20 @@ const toKebabCase = (str) =>
     .join("-");
 
 const indexFilePaths = getIndexFiles("./assets/svgIcons");
+// console.log(`AllPaths = ${allIndexPaths}`);
+
+const indexOutputStream = fs.createWriteStream("./assets/svgIcons/index.ts", { encoding: "utf8" });
+indexOutputStream.write(allIndexPaths)
+indexOutputStream.write("\n");
+
 // console.log(indexFilePaths);
-let allIcons = [];
 indexFilePaths.map((filePath) => {
   var lines = fs.readFileSync(filePath, "utf-8").split("\n").filter(Boolean);
   allIcons = allIcons.concat(lines);
 });
 // console.log(allIcons);
 
-const output_path = "./assets/utils/IconNames.ts";
-const outputStream = fs.createWriteStream(output_path, { encoding: "utf8" });
+const outputStream = fs.createWriteStream("./assets/utils/IconNames.ts", { encoding: "utf8" });
 outputStream.write("export const IconNames = {\n")
 allIcons.map((iconPath) => {
   let componentName = iconPath.substring(20);

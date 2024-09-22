@@ -5,5 +5,4 @@ export { default as EksDistro } from "./eks-distro";
 export { default as ElasticContainerRegistry } from "./elastic-container-registry";
 export { default as ElasticContainerService } from "./elastic-container-service";
 export { default as ElasticKubernetesService } from "./elastic-kubernetes-service";
-export { default as Fargate } from "./fargate";
 export { default as RedHatOpenShiftServiceOnAws } from "./red-hat-open-shift-service-on-aws";

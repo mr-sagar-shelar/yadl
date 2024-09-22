@@ -6,12 +6,12 @@ import {
   DocumentChangeResponse,
 } from "langium-ast-helper";
 import { getYADLNodes, YadlModelAstNode } from "utils/YADLDeserializer";
-import * as ICONS from "./svgIcons/skill-icons/index"
+import * as ICONS from "./svgIcons/index"
 import { IconNames } from "utils/IconNames";
 
 export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
-  const Icon = ICONS[IconNames["anaconda-light"]];
+  const Icon = ICONS[IconNames["godot-light"]];
   return (
     <div>
       <h3>Editor App</h3>

@@ -1,5 +1,4 @@
 export { default as AppConfig } from "./app-config";
-export { default as ApplicationAutoScaling } from "./application-auto-scaling";
 export { default as AutoScaling } from "./auto-scaling";
 export { default as BackintAgent } from "./backint-agent";
 export { default as Chatbot } from "./chatbot";

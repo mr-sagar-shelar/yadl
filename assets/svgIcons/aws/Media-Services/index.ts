@@ -12,5 +12,4 @@ export { default as ElementalMediaStore } from "./elemental-media-store";
 export { default as ElementalMediaTailor } from "./elemental-media-tailor";
 export { default as ElementalServer } from "./elemental-server";
 export { default as InteractiveVideoService } from "./interactive-video-service";
-export { default as KinesisVideoStreams } from "./kinesis-video-streams";
 export { default as NimbleStudio } from "./nimble-studio";
