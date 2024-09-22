@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 import * as ICONS from "../svgIcons/index";
 import { IconNames } from "utils/IconNames";
+import { motion } from "framer-motion";
 
 interface IconNodeProps {
   data: {
@@ -11,11 +12,18 @@ interface IconNodeProps {
   };
 }
 function IconNode(props: IconNodeProps) {
-  const {data} = props;
+  const { data } = props;
   const Icon = ICONS[IconNames[data.icon]];
   return (
-    <div>
-      <Icon width={data.width|| 100} height={data.height|| 100} />
+    <motion.div
+      animate={{
+        scale: [1, 1.2, 1.2, 1, 1],
+        rotate: [0, 0, 270, 270, 0],
+        borderRadius: ["20%", "20%", "50%", "50%", "20%"],
+        transition:{ repeat: Infinity, duration: 5  }
+      }}
+    >
+      <Icon width={data.width || 100} height={data.height || 100} />
       <Handle
         type="target"
         position={Position.Top}
@@ -26,7 +34,7 @@ function IconNode(props: IconNodeProps) {
         position={Position.Bottom}
         className="w-16 !bg-teal-500"
       />
-    </div>
+    </motion.div>
   );
 }
 

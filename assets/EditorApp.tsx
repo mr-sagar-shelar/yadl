@@ -52,10 +52,8 @@ export default function EditorApp() {
       } as Node;
     });
     const totalNodes = iconNodes.concat(boxNodes);
-    console.log(totalNodes);
-    if (totalNodes.length > 0) {
-      setYadlNodes(totalNodes);
-    }
+
+    setYadlNodes(totalNodes);
   };
 
   return (
