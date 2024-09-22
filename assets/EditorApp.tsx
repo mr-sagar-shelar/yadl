@@ -3,18 +3,26 @@ import ReactDOM from "react-dom";
 import Editor from "./components/Editor";
 import { deserializeAST, DocumentChangeResponse } from "langium-ast-helper";
 import { getYADLNodes, YadlModelAstNode } from "utils/YADLDeserializer";
-// import * as ICONS from "./svgIcons/index";
-// import { IconNames } from "utils/IconNames";
 import ReactFlowPreview from "./ReactFlowPreview";
 
+const initialNodes = [
+  { id: "1", position: { x: 0, y: 0 }, data: { label: "Box1" } },
+  { id: "2", position: { x: 0, y: 100 }, data: { label: "Box2" } },
+  {
+    id: "3",
+    position: { x: 200, y: 100 },
+    data: { icon: "glue" },
+    type: "icon",
+  },
+];
+const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+
 export default function EditorApp() {
-  // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
-  // const Icon = ICONS[IconNames["godot-light"]];
   let running = false;
   let timeout: number | null = null;
+
   return (
     <div>
-      <h3>Editor App</h3>
       <Editor
         onChange={(resp: DocumentChangeResponse) => {
           if (running) {
@@ -44,8 +52,7 @@ export default function EditorApp() {
         }}
       />
       
-      <ReactFlowPreview />
-      {/* <Icon width={100} height={100} /> */}
+      <ReactFlowPreview initialEdges={initialEdges} initialNodes={initialNodes} />
     </div>
   );
 }
