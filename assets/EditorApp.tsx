@@ -6,7 +6,7 @@ import {
   DocumentChangeResponse,
 } from "langium-ast-helper";
 import { getYADLNodes, YadlModelAstNode } from "utils/YADLDeserializer";
-import ReactDark from "./icons/React-Dark";
+import ReactDark from "./svgIcons/skill-icons/AngularLight";
 
 export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
@@ -24,7 +24,7 @@ export default function EditorApp() {
           // console.log(` $$$$ AST = ${JSON.stringify(getYADLNodes(resp), null, 2)}`);
         }}
       />
-      <ReactDark />
+      <ReactDark width={100} height={100} />
     </div>
   );
 }
