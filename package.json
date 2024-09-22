@@ -25,7 +25,8 @@
     "copy:monaco-workers": "npm run copy:libs:prepare && shx cp -f ./node_modules/monaco-editor-workers/dist/index.* ./public/libs/monaco-editor-workers && shx cp -f ./node_modules/monaco-editor-workers/dist/workers/editorWorker-iife.js ./public/libs/monaco-editor-workers/workers",
     "download:ffmpeg-assets": "node ./scripts/downloadFFmpegAssets.js",
     "copy:coi-serviceworker": "shx cp -f ./node_modules/coi-serviceworker/coi-serviceworker.js ./public/coi-serviceworker.js",
-    "generate-svg-components": "svgr --icon --typescript --memo --filename-case kebab  ./assets/icons --out-dir ./assets/svgIcons"
+    "generate-svg-components": "svgr --icon --typescript --memo --filename-case kebab  ./assets/icons --out-dir ./assets/svgIcons",
+    "generate-icon-names": "node generate-icon-names.js"
   },
   "devDependencies": {
     "@svgr/cli": "^8.1.0",

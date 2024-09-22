@@ -6,10 +6,12 @@ import {
   DocumentChangeResponse,
 } from "langium-ast-helper";
 import { getYADLNodes, YadlModelAstNode } from "utils/YADLDeserializer";
-import ReactDark from "./svgIcons/skill-icons/AngularLight";
+import * as ICONS from "./svgIcons/skill-icons/index"
+import { IconNames } from "utils/IconNames";
 
 export default function EditorApp() {
   // const monacoEditor: React.RefObject<MonacoEditorReactComp>;
+  const Icon = ICONS[IconNames["p-5-js"]];
   return (
     <div>
       <h3>Editor App</h3>
@@ -24,7 +26,7 @@ export default function EditorApp() {
           // console.log(` $$$$ AST = ${JSON.stringify(getYADLNodes(resp), null, 2)}`);
         }}
       />
-      <ReactDark width={100} height={100} />
+      <Icon width={100} height={100} />
     </div>
   );
 }

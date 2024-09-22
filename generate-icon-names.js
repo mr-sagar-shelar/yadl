@@ -24,6 +24,6 @@ lineReader.on("line", function (line) {
   const fullComponentName = `"${toKebabCase(componentName)}": "${componentName}",`
   outputStream.write(fullComponentName + "\n");
 });
-lineReader.on("end", function () {
-  outputStream.write("\n};")
+lineReader.on("close", function () {
+  outputStream.write("};\n")
 })
