@@ -27,8 +27,19 @@ annotation "Built-in node and edge types. Draggable, deletable and connectable!"
         x: 200 y: 20
     }
     arrowStyle {
-        right 0
+        right: 0
+        bottom: 0
         transform: "translate(-30px,10px) rotate(-80deg)"
+    }
+}
+annotation "Sub flows, toolbars and resizable nodes!" {
+    position {
+        x: 200 y: 20
+    }
+    arrowStyle {
+        left: 0
+        bottom: 0
+        transform: "translate(5px, 25px) scale(1, -1) rotate(100deg)"
     }
 }
 `,

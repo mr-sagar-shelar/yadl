@@ -23,9 +23,9 @@ Annotation:
 
 ArrowStyle:
     'arrowStyle' '{'
-        (('left:' left=NUMBER)? |
-        ('right:' right=NUMBER)? |
-        ('top:' top=NUMBER)? |
-        ('bottom:' bottom=NUMBER))*
+        ('left:' left=NUMBER)? 
+        ('right:' right=NUMBER)?
+        ('top:' top=NUMBER)?
+        ('bottom:' bottom=NUMBER)
         ('transform:' transform=STRING)?
     '}';
