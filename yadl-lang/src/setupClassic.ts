@@ -22,6 +22,15 @@ box "YADL" [icon: mongo-db] {
         x: 200 y: 20
     }
 }
+annotation "Built-in node and edge types. Draggable, deletable and connectable!" {
+    position {
+        x: 200 y: 20
+    }
+    arrowStyle {
+        right 0
+        transform: "translate(-30px,10px) rotate(-80deg)"
+    }
+}
 `,
                 useDiffEditor: false,
                 languageExtensionConfig: { id: 'langium' },

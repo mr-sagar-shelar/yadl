@@ -14,3 +14,18 @@ Box:
     'box' (label=STRING)? ('[' 'icon:'icon=(IconType0 |IconType1 |IconType2) ']')? ('{'
         (position=Position)?
     '}')?;
+
+Annotation:
+    'annotation' (label=STRING) ('{'
+        (position=Position)?
+        (arrowStyle=ArrowStyle)?
+    '}')?;
+
+ArrowStyle:
+    'arrowStyle' '{'
+        (('left:' left=NUMBER)? |
+        ('right:' right=NUMBER)? |
+        ('top:' top=NUMBER)? |
+        ('bottom:' bottom=NUMBER))*
+        ('transform:' transform=STRING)?
+    '}';
