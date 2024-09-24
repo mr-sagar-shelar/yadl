@@ -22,12 +22,12 @@ icon kubernetes { position { x: 390 y: 150 } }
 icon terraform-dark { position { x: 510 y: 150 } }
 box "YADL" [icon: angular-dark] {
     position {
-        x: 500 y: 50
+        x: 700 y: 150
     }
 }
 annotation "Built-in node and edge types. Draggable, deletable and connectable!" {
     position {
-        x: 200 y: 20
+        x: 200 y: 300
     }
     arrowStyle {
         right: 0
@@ -37,7 +37,7 @@ annotation "Built-in node and edge types. Draggable, deletable and connectable!"
 }
 annotation "Sub flows, toolbars and resizable nodes!" {
     position {
-        x: 200 y: 20
+        x: 500 y: 300
     }
     arrowStyle {
         left: 0
@@ -47,7 +47,7 @@ annotation "Sub flows, toolbars and resizable nodes!" {
 }
 box "Parent" [icon: mongo-db] {
     position {
-        x: 200 y: 20
+        x: 700 y: 20
     }
     box "CHILD1" [icon: ableton-dark] {
         position {

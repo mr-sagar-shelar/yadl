@@ -49,10 +49,19 @@ export default function EditorApp() {
         id: `box-${index}`,
         position: { x: box.position?.x || 0, y: box.position?.y || 100 },
         data: { label: box.label },
+        type: "resizer",
       } as Node;
     });
-    const totalNodes = iconNodes.concat(boxNodes);
-
+    const annotations = ast.annotations.map((annotation, index) => {
+      return {
+        id: `annotation-${index}`,
+        position: { x: annotation.position?.x || 0, y: annotation.position?.y || 100 },
+        data: { label: annotation.label },
+        type: "annotation",
+      } as Node;
+    });
+    const totalNodes = iconNodes.concat(boxNodes.concat(annotations));
+    // console.log(totalNodes);
     setYadlNodes(totalNodes);
   };
 
