@@ -45,4 +45,24 @@ annotation "Sub flows, toolbars and resizable nodes!" {
         transform: "translate(5px, 25px) scale(1, -1) rotate(100deg)"
     }
 }
+box "Parent" [icon: mongo-db] {
+    position {
+        x: 200 y: 20
+    }
+    box "CHILD1" [icon: ableton-dark] {
+        position {
+            x: 200 y: 20
+        }
+    }
+    box "CHILD2" [icon: work-mail] {
+        position {
+            x: 200 y: 20
+        }
+    }
+    box "CHILD3" [icon: work-mail] {
+        position {
+            x: 200 y: 20
+        }
+    }
+}
 ` >}}
