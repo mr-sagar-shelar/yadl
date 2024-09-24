@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import {
   ReactFlow,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
@@ -54,7 +53,6 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
       >
-        <Controls />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>

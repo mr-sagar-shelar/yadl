@@ -13,7 +13,8 @@ interface IconNodeProps {
 }
 function IconNode(props: IconNodeProps) {
   const { data } = props;
-  const Icon = ICONS[IconNames[data.icon]];
+  const iconNamePresent = IconNames[data.icon] != undefined;
+  const Icon =  iconNamePresent ? ICONS[IconNames[data.icon]] : null;
   return (
     <motion.div
       animate={{
@@ -23,7 +24,7 @@ function IconNode(props: IconNodeProps) {
         transition:{ repeat: Infinity, duration: 5  }
       }}
     >
-      <Icon width={data.width || 100} height={data.height || 100} />
+      {iconNamePresent && <Icon width={data.width || 100} height={data.height || 100} />}
       <Handle
         type="target"
         position={Position.Top}
