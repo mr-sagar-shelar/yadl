@@ -56,7 +56,7 @@ export default function EditorApp() {
       return {
         id: `annotation-${index}`,
         position: { x: annotation.position?.x || 0, y: annotation.position?.y || 100 },
-        data: { label: annotation.label },
+        data: { label: annotation.label, arrowStyle: annotation.arrowStyle },
         type: "annotation",
       } as Node;
     });
@@ -77,7 +77,7 @@ export default function EditorApp() {
           if (timeout) {
             clearTimeout(timeout);
           }
-
+          
           timeout = window.setTimeout(async () => {
             running = true;
             const ast = deserializeAST(resp.content) as YadlModelAstNode;

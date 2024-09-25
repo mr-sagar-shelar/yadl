@@ -34,7 +34,22 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       },
     };
   });
+
+  const getArrowStyle = (a: ArrowStyle) => {
+    return {
+      $type: "ArrowStyle",
+      left: a.left,
+      right: a.right,
+      top: a.top,
+      bottom: a.bottom,
+      transform: a.transform,
+    };
+  }
   const annotations = astNode.annotations.flatMap((b: Annotation) => {
+    let arrowStyle;
+    if (b.arrowStyle) {
+      arrowStyle = getArrowStyle(b.arrowStyle);
+    }
     return {
       label: b.label,
       $type: "annotation",
@@ -43,6 +58,7 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
         x: b.position?.x || 0,
         y: b.position?.y || 0,
       },
+      arrowStyle: arrowStyle
     };
   });
 
@@ -101,6 +117,16 @@ export interface Annotation {
   $type: string;
   label: string;
   position?: Position;
+  arrowStyle?: ArrowStyle;
+}
+
+export interface ArrowStyle {
+  $type: string;
+  left?: Number;
+  right?: Number;
+  top?: Number;
+  bottom?: Number;
+  transform?: string;
 }
 
 export interface Box {
