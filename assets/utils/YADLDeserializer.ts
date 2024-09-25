@@ -35,6 +35,18 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
     };
   });
 
+  const devices = astNode.devices.flatMap((d: Device) => {
+    return {
+      type: d.type,
+      $type: "Device",
+      position: {
+        $type: "Position",
+        x: d.position?.x || 0,
+        y: d.position?.y || 0,
+      },
+    };
+  });
+
   const getArrowStyle = (a: ArrowStyle) => {
     return {
       $type: "ArrowStyle",
@@ -68,6 +80,7 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
     enums: enums,
     icons: icons,
     boxes: boxes,
+    devices: devices,
     annotations: annotations,
   };
 }
@@ -84,6 +97,7 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
     ) as Enums[],
     icons: (ast.icons as Icon[])?.filter((e) => e.$type === "Icon") as Icon[],
     boxes: (ast.boxes as Box[])?.filter((e) => e.$type === "Box") as Box[],
+    devices: (ast.devices as Device[])?.filter((e) => e.$type === "Device") as Device[],
     annotations: (ast.annotations as Annotation[])?.filter((e) => e.$type === "Annotation") as Annotation[],
   };
 }
@@ -94,6 +108,7 @@ export interface YadlModelAstNode extends AstNode, YadlModelElement {
   enums: Enums[];
   icons: Icon[];
   boxes: Box[];
+  devices: Device[];
   annotations: Annotation[];
 }
 
@@ -110,6 +125,12 @@ export interface Position {
 export interface Icon {
   $type: string;
   icon: string;
+  position?: Position;
+}
+
+export interface Device {
+  $type: string;
+  type: string;
   position?: Position;
 }
 

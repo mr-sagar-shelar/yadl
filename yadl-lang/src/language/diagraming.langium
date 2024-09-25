@@ -39,3 +39,11 @@ Style:
         ('color:' color=NUMBER)?
         ('background:' background=STRING)?
     '}';
+
+DeviceType returns string:
+	'apple-watch-series8' | 'apple-watch-ultra' | 'google-pixel6-pro' | 'i-mac' | 'i-pad-pro' | 'i-phone14' | 'i-phone14-pro' | 'macbook-pro' | 'pro-display-xdr' | 'surface-book' | 'surface-pro' | 'surface-studio';
+
+Device:
+    'device' type=DeviceType ('{'
+        (position=Position)?
+    '}')?;

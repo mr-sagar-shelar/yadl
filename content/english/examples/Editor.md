@@ -65,4 +65,40 @@ box "Parent" [icon: mongo-db] {
         }
     }
 }
+device apple-watch-series8 {
+    position {
+        x: 50 y: 500
+    }
+}
+
+device apple-watch-ultra {
+    position {
+        x: 400 y: 500
+    }
+}
+device google-pixel6-pro {
+    position {
+        x: 800 y: 500
+    }
+}
+device i-mac {
+    position {
+        x: 1250 y: 500
+    }
+}
+device i-pad-pro {
+    position {
+        x: 1950 y: 500
+    }
+}
+device i-phone14{
+    position {
+        x: 0 y: 900
+    }
+}
+device i-phone14-pro{
+    position {
+        x: 350 y: 900
+    }
+}
 ` >}}

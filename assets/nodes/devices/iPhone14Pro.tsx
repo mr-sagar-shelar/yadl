@@ -1,7 +1,5 @@
 import React, { memo } from "react";
-
-export default memo(() => {
-  return (
+const Device = () => (
     <>
       <div className="device device-iphone-14-pro">
         <div className="device-frame">
@@ -14,5 +12,7 @@ export default memo(() => {
         <div className="device-power"></div>
       </div>
     </>
-  );
-});
+);
+
+const Memo = memo(Device);
+export default Memo;

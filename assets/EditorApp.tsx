@@ -55,13 +55,22 @@ export default function EditorApp() {
     const annotations = ast.annotations.map((annotation, index) => {
       return {
         id: `annotation-${index}`,
-        position: { x: annotation.position?.x || 0, y: annotation.position?.y || 100 },
+        position: { x: annotation.position?.x || 0, y: annotation.position?.y || 0 },
         data: { label: annotation.label, arrowStyle: annotation.arrowStyle },
         type: "annotation",
       } as Node;
     });
-    const totalNodes = iconNodes.concat(boxNodes.concat(annotations));
-    // console.log(totalNodes);
+    const devices = ast.devices.map((device, index) => {
+      return {
+        id: `device-${index}`,
+        position: { x: device.position?.x || 0, y: device.position?.y || 0 },
+        data: { type: device.type },
+        type: "device",
+      } as Node;
+    });
+
+    const totalNodes = iconNodes.concat(boxNodes.concat(annotations.concat(devices)));
+    console.log(totalNodes);
     setYadlNodes(totalNodes);
   };
 
