@@ -4,7 +4,31 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
   //   console.error(JSON.stringify(ast, null, 2));
   const astNode = getYadlModelAst(ast as YadlModelAstNode);
   //   console.error(JSON.stringify(astNode.enums.length, null, 2));
-
+  const getPosition = (position: Position): Position => {
+    if (!position) {
+      return {
+        $type: "Position",
+        x: 0,
+        y: 0,
+      };
+    }
+    const textRange = position.$textRegion;
+    let xRange: Range = undefined;
+    let yRange: Range = undefined;
+    if (textRange.assignments.x.length > 0) {
+      xRange = textRange.assignments.x[0].range;
+    }
+    if (textRange.assignments.y.length > 0) {
+      yRange = textRange.assignments.y[0].range;
+    }
+    return {
+      $type: "Position",
+      x: position.x,
+      y: position.y,
+      xRange: xRange,
+      yRange: yRange,
+    };
+  };
   const enums = astNode.enums.flatMap((d: Enums) => {
     return {
       name: d.name,
@@ -15,11 +39,7 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
     return {
       icon: i.icon,
       $type: "Icon",
-      position: {
-        $type: "Position",
-        x: i.position?.x || 0,
-        y: i.position?.y || 0,
-      },
+      position: getPosition(i.position),
     };
   });
   const boxes = astNode.boxes.flatMap((b: Box) => {
@@ -27,11 +47,7 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       icon: b.icon,
       label: b.label,
       $type: "Box",
-      position: {
-        $type: "Position",
-        x: b.position?.x || 0,
-        y: b.position?.y || 0,
-      },
+      position: getPosition(b.position),
     };
   });
 
@@ -39,11 +55,7 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
     return {
       type: d.type,
       $type: "Device",
-      position: {
-        $type: "Position",
-        x: d.position?.x || 0,
-        y: d.position?.y || 0,
-      },
+      position: getPosition(d.position),
     };
   });
 
@@ -56,21 +68,18 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       bottom: a.bottom,
       transform: a.transform,
     };
-  }
-  const annotations = astNode.annotations.flatMap((b: Annotation) => {
+  };
+  const annotations = astNode.annotations.flatMap((a: Annotation) => {
     let arrowStyle;
-    if (b.arrowStyle) {
-      arrowStyle = getArrowStyle(b.arrowStyle);
+    if (a.arrowStyle) {
+      arrowStyle = getArrowStyle(a.arrowStyle);
     }
+    const position = getPosition(a.position);
     return {
-      label: b.label,
+      label: a.label,
       $type: "annotation",
-      position: {
-        $type: "Position",
-        x: b.position?.x || 0,
-        y: b.position?.y || 0,
-      },
-      arrowStyle: arrowStyle
+      position: getPosition(a.position),
+      arrowStyle: arrowStyle,
     };
   });
 
@@ -97,8 +106,12 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
     ) as Enums[],
     icons: (ast.icons as Icon[])?.filter((e) => e.$type === "Icon") as Icon[],
     boxes: (ast.boxes as Box[])?.filter((e) => e.$type === "Box") as Box[],
-    devices: (ast.devices as Device[])?.filter((e) => e.$type === "Device") as Device[],
-    annotations: (ast.annotations as Annotation[])?.filter((e) => e.$type === "Annotation") as Annotation[],
+    devices: (ast.devices as Device[])?.filter(
+      (e) => e.$type === "Device",
+    ) as Device[],
+    annotations: (ast.annotations as Annotation[])?.filter(
+      (e) => e.$type === "Annotation",
+    ) as Annotation[],
   };
 }
 
@@ -118,8 +131,11 @@ export interface Enums extends YadlModelElement {
 
 export interface Position {
   $type: string;
+  $textRegion?: TextRegion;
   x: number;
   y: number;
+  xRange?: Range;
+  yRange?: Range;
 }
 
 export interface Icon {
@@ -136,6 +152,7 @@ export interface Device {
 
 export interface Annotation {
   $type: string;
+  $textRegion?: TextRegion;
   label: string;
   position?: Position;
   arrowStyle?: ArrowStyle;
@@ -151,11 +168,40 @@ export interface ArrowStyle {
 }
 
 export interface Box {
-    $type: string;
-    icon: string;
-    label: string;
-    position?: Position;
-  }
+  $type: string;
+  icon: string;
+  label: string;
+  position?: Position;
+}
+
+export interface RangeRow {
+  character: number;
+  line: number;
+}
+
+export interface Range {
+  start: RangeRow;
+  end: RangeRow;
+}
+
+export interface AssignmentRow {
+  end: number;
+  length: number;
+  offset: number;
+  range: Range;
+}
+
+export interface Assignment {
+  x: AssignmentRow[];
+  y: AssignmentRow[];
+}
+
+export interface TextRegion {
+  assignments: Assignment;
+  end: number;
+  length: number;
+  offset: number;
+}
 
 export interface YadlModelElement {
   $type: string;
