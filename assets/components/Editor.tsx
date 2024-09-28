@@ -6,9 +6,7 @@ import {
   UserConfig,
 } from "langium-website-core/bundle";
 import { buildWorkerDefinition } from "monaco-editor-workers";
-import {
-  DocumentChangeResponse,
-} from "langium-ast-helper";
+import { DocumentChangeResponse } from "langium-ast-helper";
 import syntaxHighlighting from "../scripts/yadl.monarch";
 addMonacoStyles("monaco-styles-helper");
 
@@ -42,7 +40,7 @@ export default function Editor(props: EditorProps) {
       },
       "vs-dark",
     );
-    
+
     setUserConfig(userConfig);
   }, []);
 
@@ -60,6 +58,24 @@ export default function Editor(props: EditorProps) {
     monacoEditor.current.getEditorWrapper()?.getEditor()?.focus();
     // register to receive DocumentChange notifications
     lc.onNotification("browser/DocumentChange", onChange);
+  };
+
+  const onAddClick = () => {
+    const monacoInstance = monacoEditor?.current?.getEditorWrapper().getEditor();
+    const selection = monacoInstance.getSelection();
+    const id = { major: 1, minor: 1 };
+    const op = {
+        identifier: id,
+        range: {
+            startLineNumber: selection?.selectionStartLineNumber || 1,
+            startColumn: selection?.selectionStartColumn || 1,
+            endLineNumber: selection?.endLineNumber || 1,
+            endColumn: selection?.endColumn || 1,
+        },
+        text: "800",
+        forceMoveMarkers: true,
+    };
+    monacoInstance.executeEdits('my-source', [op]);
   };
 
   const renderEditor = () => {
@@ -81,5 +97,12 @@ export default function Editor(props: EditorProps) {
     );
   };
 
-  return <div>{renderEditor()}</div>;
+  return (
+    <div>
+      {renderEditor()}
+      <button className="btn btn-primary" onClick={onAddClick}>
+        Update Selected Location
+      </button>
+    </div>
+  );
 }
