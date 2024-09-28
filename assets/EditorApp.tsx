@@ -74,6 +74,10 @@ export default function EditorApp() {
     setYadlNodes(totalNodes);
   };
 
+  const onNodeChange = (node: Node) => {
+    console.log(` $$$$ 22222 ${JSON.stringify(node, null, 2)}`);
+  }
+
   return (
     <div>
       <Editor
@@ -105,7 +109,7 @@ export default function EditorApp() {
           // console.log(` $$$$ AST = ${JSON.stringify(getYADLNodes(resp), null, 2)}`);
         }}
       />
-      <ReactFlowPreview initialEdges={[]} initialNodes={yadlNodes} />
+      <ReactFlowPreview initialEdges={[]} initialNodes={yadlNodes} onNodeChange={onNodeChange} />
     </div>
   );
 }

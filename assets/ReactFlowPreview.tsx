@@ -6,7 +6,10 @@ import {
   useEdgesState,
   addEdge,
   Node,
-  Edge
+  Edge,
+  OnNodesChange,
+  applyNodeChanges,
+  NodeChange,
 } from "@xyflow/react";
 import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
 // const initialNodes = [
@@ -23,13 +26,14 @@ import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
 
 interface ReactFlowPreviewProps {
   initialNodes: Node[];
-  initialEdges: Edge[]
+  initialEdges: Edge[];
+  onNodeChange: (node: Node) => void;
 }
 
 export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
-  const { initialNodes = [], initialEdges = [] } = props;
+  const { initialNodes = [], initialEdges = [], onNodeChange } = props;
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
@@ -40,7 +44,18 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
   React.useEffect(() => {
     setNodes(initialNodes);
     setEdges(initialEdges);
-  },[initialNodes, initialEdges]);
+  }, [initialNodes, initialEdges]);
+
+  const onNodesChange: OnNodesChange = useCallback(
+    (changes: NodeChange[]) => {
+      setNodes((nds) => applyNodeChanges(changes, nds));
+      const node = changes[0] as Node;
+      if (!node.dragging) {
+        onNodeChange(node);
+      }
+    },
+    [setNodes],
+  );
 
   return (
     <div style={{ width: "70vw", height: "400px" }}>

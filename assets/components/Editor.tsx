@@ -61,7 +61,10 @@ export default function Editor(props: EditorProps) {
   };
 
   const onAddClick = () => {
-    const monacoInstance = monacoEditor?.current?.getEditorWrapper().getEditor();
+    if (!monacoEditor || !monacoEditor.current) {
+      return;
+    }
+    const monacoInstance = monacoEditor?.current?.getEditorWrapper()?.getEditor();
     const selection = monacoInstance.getSelection();
     const id = { major: 1, minor: 1 };
     const op = {
