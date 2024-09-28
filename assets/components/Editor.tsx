@@ -47,7 +47,7 @@ export default function Editor(props: EditorProps) {
   }, []);
 
   React.useEffect(() => {
-    console.log(` $$$$ Update Position: ${position}`);
+    // console.log(` $$$$ Update Position: ${position}`);
     setPosition(position)
   }, [position]);
 

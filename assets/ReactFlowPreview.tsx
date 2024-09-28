@@ -48,11 +48,19 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      setNodes((nds) => applyNodeChanges(changes, nds));
-      const node = changes[0] as Node;
-      if (!node.dragging) {
-        onNodeChange(node);
-      }
+      const updatedNode = changes[0] as Node;
+      setNodes((nds) => {
+        if (updatedNode.type == "select") {
+          console.log(` $$$$ Select Node: ${updatedNode.type}`);
+        }
+        if (updatedNode.type == "position" && !updatedNode.dragging) {
+          const currentNode = nds.filter((node) => node.id === updatedNode.id);
+          console.log(
+            ` $$$$ Update Position: ${JSON.stringify(currentNode, null, 2)}`,
+          );
+        }
+        return applyNodeChanges(changes, nds);
+      });
     },
     [setNodes],
   );
@@ -67,6 +75,7 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        proOptions={{ hideAttribution: true }}
       >
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>

@@ -45,7 +45,11 @@ export default function EditorApp() {
       return {
         id: `icon-${index}`,
         position: { x: icon.position?.x || 0, y: icon.position?.y || 100 },
-        data: { icon: icon.icon },
+        data: { 
+          icon: icon.icon,
+          xRange: icon.position?.xRange,
+          yRange: icon.position?.yRange,
+        },
         type: "icon",
       } as Node;
     });
@@ -53,7 +57,11 @@ export default function EditorApp() {
       return {
         id: `box-${index}`,
         position: { x: box.position?.x || 0, y: box.position?.y || 100 },
-        data: { label: box.label },
+        data: { 
+          label: box.label,
+          xRange: box.position?.xRange,
+          yRange: box.position?.yRange,
+        },
         type: "resizer",
       } as Node;
     });
@@ -64,7 +72,12 @@ export default function EditorApp() {
           x: annotation.position?.x || 0,
           y: annotation.position?.y || 0,
         },
-        data: { label: annotation.label, arrowStyle: annotation.arrowStyle },
+        data: { 
+          label: annotation.label, 
+          arrowStyle: annotation.arrowStyle,
+          xRange: annotation.position?.xRange,
+          yRange: annotation.position?.yRange,
+        },
         type: "annotation",
       } as Node;
     });
@@ -72,7 +85,11 @@ export default function EditorApp() {
       return {
         id: `device-${index}`,
         position: { x: device.position?.x || 0, y: device.position?.y || 0 },
-        data: { type: device.type },
+        data: { 
+          type: device.type,
+          xRange: device.position?.xRange,
+          yRange: device.position?.yRange,
+        },
         type: "device",
       } as Node;
     });
