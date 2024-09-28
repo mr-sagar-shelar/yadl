@@ -136,36 +136,51 @@ class AppClass extends React.Component<{}, AppState> {
     }
     // lc.onNotification("browser/DocumentChange", this.onDocumentChange);
     // this.monacoEditor.current.executeCommand("",)
-    const params: CodeActionParams = {
-      // textDocument: lc.code2ProtocolConverter.asTextDocumentIdentifier(),
-      // range: lc.code2ProtocolConverter.asRange(range),
-      textDocument: {
-        uri: "inmemory://model.yadl"
-      },
-      range: {
-        start: {
-          line: 0,
-          character: 0,
-        },
-        end: {
-          line: 0,
-          character: 5,
-        },
-      },
-      // context: CodeActionContext,
-      context: { 
-        diagnostics: [],
-        triggerKind: CodeActionTriggerKind.Invoked
-      },
-      // context: lc.code2ProtocolConverter.asCodeActionContextSync(context)
-    };
-    console.error(`$$$$ Sending Request: ${params}`);
-    lc.sendRequest(CodeActionRequest.method,params).then((response) => {
-      console.error(`$$$$ Response: ${response}`);
-    }).catch(error => {
-      console.error(`$$$$ Error: ${error}`);
-    });
+    // const params: CodeActionParams = {
+    //   // textDocument: lc.code2ProtocolConverter.asTextDocumentIdentifier(),
+    //   // range: lc.code2ProtocolConverter.asRange(range),
+    //   textDocument: {
+    //     uri: "inmemory://model.yadl"
+    //   },
+    //   range: {
+    //     start: {
+    //       line: 0,
+    //       character: 0,
+    //     },
+    //     end: {
+    //       line: 0,
+    //       character: 5,
+    //     },
+    //   },
+    //   // context: CodeActionContext,
+    //   context: { 
+    //     diagnostics: [],
+    //     triggerKind: CodeActionTriggerKind.Invoked
+    //   },
+    //   // context: lc.code2ProtocolConverter.asCodeActionContextSync(context)
+    // };
+    // console.error(`$$$$ Sending Request: ${params}`);
+    // lc.sendRequest(CodeActionRequest.method,params).then((response) => {
+    //   console.error(`$$$$ Response: ${response}`);
+    // }).catch(error => {
+    //   console.error(`$$$$ Error: ${error}`);
+    // });
     // lc.sendNotification("browser/sagar-from-client");
+    const monacoInstance = this.monacoEditor.current.getEditorWrapper().getEditor();
+    const selection = monacoInstance.getSelection();
+    const id = { major: 1, minor: 1 };
+    const op = {
+        identifier: id,
+        range: {
+            startLineNumber: selection?.selectionStartLineNumber || 1,
+            startColumn: selection?.selectionStartColumn || 1,
+            endLineNumber: selection?.endLineNumber || 1,
+            endColumn: selection?.endColumn || 1,
+        },
+        text: "sagar shelar",
+        forceMoveMarkers: true,
+    };
+    monacoInstance.executeEdits('my-source', [op]);
   }
 
   onRenameRequest(resp: DocumentChangeResponse) {
