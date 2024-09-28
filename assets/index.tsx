@@ -15,8 +15,17 @@ import {
 import { DomainModelAstNode } from "./domainmodel-tools";
 import syntaxHighlighting from "./scripts/yadl.monarch";
 import Preview from "Preview";
-import type { RenameParams, WorkspaceEdit } from 'vscode-languageserver'
+import {
+  CodeActionParams,
+  RenameParams,
+  CodeActionRequest,
+  // CodeActionContext,
+  CodeActionTriggerKind
+} from "vscode-languageserver/browser.js";
+// import { TextDocument } from "vscode";
 import VideoRecorder from "./components/VideoRecorder";
+// import { Position } from "@xyflow/react";
+// import { URI } from 'vscode-uri'
 
 addMonacoStyles("monaco-styles-helper");
 
@@ -126,7 +135,37 @@ class AppClass extends React.Component<{}, AppState> {
       throw new Error("Could not get handle to Language Client on mount");
     }
     // lc.onNotification("browser/DocumentChange", this.onDocumentChange);
-    lc.sendNotification("browser/sagar-from-client");
+    // this.monacoEditor.current.executeCommand("",)
+    const params: CodeActionParams = {
+      // textDocument: lc.code2ProtocolConverter.asTextDocumentIdentifier(),
+      // range: lc.code2ProtocolConverter.asRange(range),
+      textDocument: {
+        uri: "inmemory://model.yadl"
+      },
+      range: {
+        start: {
+          line: 0,
+          character: 0,
+        },
+        end: {
+          line: 0,
+          character: 5,
+        },
+      },
+      // context: CodeActionContext,
+      context: { 
+        diagnostics: [],
+        triggerKind: CodeActionTriggerKind.Invoked
+      },
+      // context: lc.code2ProtocolConverter.asCodeActionContextSync(context)
+    };
+    console.error(`$$$$ Sending Request: ${params}`);
+    lc.sendRequest(CodeActionRequest.method,params).then((response) => {
+      console.error(`$$$$ Response: ${response}`);
+    }).catch(error => {
+      console.error(`$$$$ Error: ${error}`);
+    });
+    // lc.sendNotification("browser/sagar-from-client");
   }
 
   onRenameRequest(resp: DocumentChangeResponse) {
