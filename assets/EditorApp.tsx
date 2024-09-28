@@ -2,7 +2,11 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 import Editor from "./components/Editor";
 import { deserializeAST, DocumentChangeResponse } from "langium-ast-helper";
-import { getYADLNodes, YadlModelAstNode } from "utils/YADLDeserializer";
+import {
+  getYADLNodes,
+  Position,
+  YadlModelAstNode,
+} from "utils/YADLDeserializer";
 import ReactFlowPreview from "./ReactFlowPreview";
 import { Node, Edge } from "@xyflow/react";
 
@@ -34,6 +38,7 @@ export default function EditorApp() {
   let timeout: number | null = null;
 
   const [yadlNodes, setYadlNodes] = React.useState<Node[]>([]);
+  const [position, setPosition] = React.useState<number>(0);
 
   const parseNodesAndEdges = (ast: YadlModelAstNode) => {
     const iconNodes = ast.icons.map((icon, index) => {
@@ -55,7 +60,10 @@ export default function EditorApp() {
     const annotations = ast.annotations.map((annotation, index) => {
       return {
         id: `annotation-${index}`,
-        position: { x: annotation.position?.x || 0, y: annotation.position?.y || 0 },
+        position: {
+          x: annotation.position?.x || 0,
+          y: annotation.position?.y || 0,
+        },
         data: { label: annotation.label, arrowStyle: annotation.arrowStyle },
         type: "annotation",
       } as Node;
@@ -69,18 +77,30 @@ export default function EditorApp() {
       } as Node;
     });
 
-    const totalNodes = iconNodes.concat(boxNodes.concat(annotations.concat(devices)));
+    const totalNodes = iconNodes.concat(
+      boxNodes.concat(annotations.concat(devices)),
+    );
     console.log(totalNodes);
     setYadlNodes(totalNodes);
   };
 
   const onNodeChange = (node: Node) => {
+    // console.log(` $$$$ 22222 ${JSON.stringify(node, null, 2)}`);
+    if (node.position && position != node.position.x) {
     console.log(` $$$$ 22222 ${JSON.stringify(node, null, 2)}`);
-  }
+    setPosition(node.position.x);
+      // setPosition({
+      //   $type: "",
+      //   x: node.position?.x || 0,
+      //   y: node.position?.y || 0,
+      // });
+    }
+  };
 
   return (
     <div>
       <Editor
+        position={position}
         onChange={(resp: DocumentChangeResponse) => {
           if (running) {
             return;
@@ -90,7 +110,7 @@ export default function EditorApp() {
           if (timeout) {
             clearTimeout(timeout);
           }
-          
+
           timeout = window.setTimeout(async () => {
             running = true;
             const ast = deserializeAST(resp.content) as YadlModelAstNode;
@@ -98,7 +118,8 @@ export default function EditorApp() {
             parseNodesAndEdges(deserializedContent);
             // console.log(deserializedContent);
             running = false;
-          }, 1000);
+          // }, 0);
+        }, 1000);
 
           // console.error(JSON.parse(resp.content));
           // const ast = deserializeAST(resp.content) as YadlModelAstNode;
@@ -109,7 +130,11 @@ export default function EditorApp() {
           // console.log(` $$$$ AST = ${JSON.stringify(getYADLNodes(resp), null, 2)}`);
         }}
       />
-      <ReactFlowPreview initialEdges={[]} initialNodes={yadlNodes} onNodeChange={onNodeChange} />
+      <ReactFlowPreview
+        initialEdges={[]}
+        initialNodes={yadlNodes}
+        onNodeChange={onNodeChange}
+      />
     </div>
   );
 }

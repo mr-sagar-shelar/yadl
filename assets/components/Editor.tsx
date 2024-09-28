@@ -8,6 +8,7 @@ import {
 import { buildWorkerDefinition } from "monaco-editor-workers";
 import { DocumentChangeResponse } from "langium-ast-helper";
 import syntaxHighlighting from "../scripts/yadl.monarch";
+import { Position } from "utils/YADLDeserializer";
 addMonacoStyles("monaco-styles-helper");
 
 buildWorkerDefinition(
@@ -18,12 +19,13 @@ buildWorkerDefinition(
 
 interface EditorProps {
   onChange: (resp: DocumentChangeResponse) => void;
+  position?: number;
 }
 
 export default function Editor(props: EditorProps) {
   const monacoEditor = React.useRef();
   const [userConfig, setUserConfig] = React.useState<UserConfig>();
-  const { onChange } = props;
+  const { onChange, position } = props;
 
   React.useEffect(() => {
     let code = "";
@@ -44,6 +46,11 @@ export default function Editor(props: EditorProps) {
     setUserConfig(userConfig);
   }, []);
 
+  React.useEffect(() => {
+    console.log(` $$$$ Update Position: ${position}`);
+    setPosition(position)
+  }, [position]);
+
   const onMonacoLoad = () => {
     // verify we can get a ref to the editor
     if (!monacoEditor.current) {
@@ -60,7 +67,7 @@ export default function Editor(props: EditorProps) {
     lc.onNotification("browser/DocumentChange", onChange);
   };
 
-  const onAddClick = () => {
+  const setPosition = (position: number) => {
     if (!monacoEditor || !monacoEditor.current) {
       return;
     }
@@ -75,10 +82,14 @@ export default function Editor(props: EditorProps) {
             endLineNumber: selection?.endLineNumber || 1,
             endColumn: selection?.endColumn || 1,
         },
-        text: "800",
+        text: position.toString(),
         forceMoveMarkers: true,
     };
     monacoInstance.executeEdits('my-source', [op]);
+  }
+
+  const onAddClick = () => {
+    setPosition(800);
   };
 
   const renderEditor = () => {
