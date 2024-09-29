@@ -7,9 +7,10 @@ import {
   UserConfig,
 } from "langium-website-core/bundle";
 import { buildWorkerDefinition } from "monaco-editor-workers";
-import { DocumentChangeResponse } from "langium-ast-helper";
+import { deserializeAST, DocumentChangeResponse } from "langium-ast-helper";
 import syntaxHighlighting from "./scripts/yadl.monarch";
-import { Position } from "utils/YADLDeserializer";
+import { getNodesAndEdges, YadlModelAstNode } from "utils/YADLDeserializer";
+import ReactFlowPreview from "./ReactFlowPreview";
 addMonacoStyles("monaco-styles-helper");
 
 buildWorkerDefinition(
@@ -21,6 +22,10 @@ buildWorkerDefinition(
 export default function YadlEditor() {
   const monacoEditor = React.useRef();
   const [userConfig, setUserConfig] = React.useState<UserConfig>();
+  const [yadlNodes, setYadlNodes] = React.useState<Node[]>([]);
+  let running = false;
+  let timeout: number | null = null;
+
   const onMonacoLoad = () => {
     // verify we can get a ref to the editor
     if (!monacoEditor.current) {
@@ -57,7 +62,28 @@ export default function YadlEditor() {
   }, []);
 
   const onChange = (resp: DocumentChangeResponse) => {
+    if (running) {
+      return;
+    }
 
+    // clear previous timeouts
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    timeout = window.setTimeout(async () => {
+      running = true;
+      const ast = deserializeAST(resp.content) as YadlModelAstNode;
+      const nodesAndEdges = getNodesAndEdges(ast);
+      setYadlNodes(nodesAndEdges);
+      // console.log(deserializedContent);
+      running = false;
+      // }, 0);
+    }, 1000);
+  };
+
+  const onNodeChange = (node: Node) => {
+    console.log(` $$$$ 22222 ${JSON.stringify(node, null, 2)}`);
   };
 
   const renderEditor = () => {
@@ -82,6 +108,11 @@ export default function YadlEditor() {
   return (
     <div>
       {renderEditor()}
+      <ReactFlowPreview
+        initialEdges={[]}
+        initialNodes={yadlNodes}
+        onNodeChange={onNodeChange}
+      />
     </div>
   );
 }

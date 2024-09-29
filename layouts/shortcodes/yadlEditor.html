@@ -8,7 +8,7 @@
   <div id="editor-code" data-code='{{ .Get "code" }}'></div>
 {{ end }}
 
-{{ with resources.Get "EditorApp.tsx" }}
+{{ with resources.Get "YadlEditor.tsx" }}
   {{ $options := dict "defines" (dict "process.env.NODE_ENV" "\"development\"" "process.env.BaseURL" (printf `"%s"` $.Site.BaseURL)) }}
   {{ $script := . | js.Build $options }}
   <script src="{{ $script.RelPermalink }}" defer></script>

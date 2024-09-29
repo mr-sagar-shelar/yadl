@@ -94,9 +94,6 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
   };
 }
 
-/**
- * Returns a YadlModelAstNode from a given ast.
- */
 export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
   return {
     name: ast.name,
@@ -115,7 +112,68 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
   };
 }
 
-// a more accessible representation of the DomainModel Ast
+export function getNodesAndEdges(astNode: AstNode): Node[] {
+  const ast = getYADLNodes(astNode);
+  const iconNodes = ast.icons.map((icon, index) => {
+    return {
+      id: `icon-${index}`,
+      position: { x: icon.position?.x || 0, y: icon.position?.y || 100 },
+      data: {
+        icon: icon.icon,
+        xRange: icon.position?.xRange,
+        yRange: icon.position?.yRange,
+      },
+      type: "icon",
+    } as Node;
+  });
+  const boxNodes = ast.boxes.map((box, index) => {
+    return {
+      id: `box-${index}`,
+      position: { x: box.position?.x || 0, y: box.position?.y || 100 },
+      data: {
+        label: box.label,
+        xRange: box.position?.xRange,
+        yRange: box.position?.yRange,
+      },
+      type: "resizer",
+    } as Node;
+  });
+  const annotations = ast.annotations.map((annotation, index) => {
+    return {
+      id: `annotation-${index}`,
+      position: {
+        x: annotation.position?.x || 0,
+        y: annotation.position?.y || 0,
+      },
+      data: {
+        label: annotation.label,
+        arrowStyle: annotation.arrowStyle,
+        xRange: annotation.position?.xRange,
+        yRange: annotation.position?.yRange,
+      },
+      type: "annotation",
+    } as Node;
+  });
+  const devices = ast.devices.map((device, index) => {
+    return {
+      id: `device-${index}`,
+      position: { x: device.position?.x || 0, y: device.position?.y || 0 },
+      data: {
+        type: device.type,
+        xRange: device.position?.xRange,
+        yRange: device.position?.yRange,
+      },
+      type: "device",
+    } as Node;
+  });
+
+  const totalNodes = iconNodes.concat(
+    boxNodes.concat(annotations.concat(devices)),
+  );
+
+  return totalNodes;
+}
+
 export interface YadlModelAstNode extends AstNode, YadlModelElement {
   $type: "YadlModel";
   enums: Enums[];
