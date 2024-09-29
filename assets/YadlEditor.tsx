@@ -65,8 +65,6 @@ export default function YadlEditor() {
     if (running) {
       return;
     }
-
-    // clear previous timeouts
     if (timeout) {
       clearTimeout(timeout);
     }
@@ -76,14 +74,22 @@ export default function YadlEditor() {
       const ast = deserializeAST(resp.content) as YadlModelAstNode;
       const nodesAndEdges = getNodesAndEdges(ast);
       setYadlNodes(nodesAndEdges);
-      // console.log(deserializedContent);
       running = false;
-      // }, 0);
     }, 1000);
   };
 
   const onNodeChange = (node: Node) => {
-    console.log(` $$$$ 22222 ${JSON.stringify(node, null, 2)}`);
+    console.log(` $$$$ onNodeChange ${JSON.stringify(node, null, 2)}`);
+  };
+
+  const onNodeSelect = (node: Node) => {
+    if (!monacoEditor || !monacoEditor.current) {
+      return;
+    }
+
+    const monacoInstance = monacoEditor?.current?.getEditorWrapper()?.getEditor();
+    monacoInstance.setPosition({column: 5, lineNumber: 10});
+    monacoInstance.revealLineInCenter(15);
   };
 
   const renderEditor = () => {
@@ -112,6 +118,7 @@ export default function YadlEditor() {
         initialEdges={[]}
         initialNodes={yadlNodes}
         onNodeChange={onNodeChange}
+        onNodeSelect={onNodeSelect}
       />
     </div>
   );
