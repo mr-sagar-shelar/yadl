@@ -41,7 +41,7 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
       const updatedNode = changes[0] as Node;
       setNodes((nds) => {
         if (updatedNode.type == "select") {
-          console.log(` $$$$ Select Node: ${updatedNode.type}`);
+          // console.log(` $$$$ Select Node: ${updatedNode.type}`);
           onNodeSelect(updatedNode);
         }
         if (updatedNode.type == "position" && !updatedNode.dragging) {

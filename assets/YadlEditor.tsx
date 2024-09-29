@@ -77,59 +77,63 @@ export default function YadlEditor() {
       const nodesAndEdges = getNodesAndEdges(ast);
       setYadlNodes(nodesAndEdges);
       running = false;
-    }, 1000);
+    }, 0);
   };
 
   const onNodeChange = (node: Node) => {
     if (!monacoEditor || !monacoEditor.current) {
       return;
     }
-    console.log(` $$$$ onNodeChange ${JSON.stringify(node, null, 2)}`);
+    // console.log(` $$$$ onNodeChange ${JSON.stringify(node, null, 2)}`);
 
     const monacoInstance = monacoEditor?.current
       ?.getEditorWrapper()
       ?.getEditor();
-    const xValue = node.position.x;
-    const yValue = node.position.y;
+    const xValue = Math.trunc(node.position.x);
+    const yValue = Math.trunc(node.position.y);
 
-    const startXLineNumber = get(node, "data.xRange.start.line", 0) + 1;
-    const startXColumn = get(node, "data.xRange.start.character", 0) + 1;
-    const endXLineNumber = get(node, "data.xRange.end.line", 0) + 1;
-    const endXColumn = get(node, "data.xRange.end.character", 0) + 1;
-
-    // console.error(
-    //   `$$$$ Row Details ${startLineNumber}, ${startColumn}, ${endLineNumber}, ${endColumn}`,
-    // );
-    console.error(`$$$$ xValue ${xValue}, ${yValue}`);
     const id = { major: 1, minor: 1 };
-    const xOperation = {
-      identifier: id,
-      range: {
-        startLineNumber: startXLineNumber,
-        startColumn: startXColumn,
-        endLineNumber: endXLineNumber,
-        endColumn: endXColumn,
-      },
-      text: `${xValue}`,
-      forceMoveMarkers: true,
-    };
+    let yDifference = 0;
+    if (!isNaN(xValue)) {
+      const startXLineNumber = get(node, "data.xRange.start.line", 0) + 1;
+      const startXColumn = get(node, "data.xRange.start.character", 0) + 1;
+      const endXLineNumber = get(node, "data.xRange.end.line", 0) + 1;
+      const endXColumn = get(node, "data.xRange.end.character", 0) + 1;
+      const xOperation = {
+        identifier: id,
+        range: {
+          startLineNumber: startXLineNumber,
+          startColumn: startXColumn,
+          endLineNumber: endXLineNumber,
+          endColumn: endXColumn,
+        },
+        text: `${xValue}`,
+        forceMoveMarkers: true,
+      };
 
-    const startYLineNumber = get(node, "data.yRange.start.line", 0) + 1;
-    const startYColumn = get(node, "data.yRange.start.character", 0) + 1;
-    const endYLineNumber = get(node, "data.yRange.end.line", 0) + 1;
-    const endYColumn = get(node, "data.yRange.end.character", 0) + 1;
-    const yOperation = {
-      identifier: id,
-      range: {
-        startLineNumber: startYLineNumber,
-        startColumn: startYColumn,
-        endLineNumber: endYLineNumber,
-        endColumn: endYColumn,
-      },
-      text: `${yValue}`,
-      forceMoveMarkers: true,
-    };
-    monacoInstance.executeEdits("my-source", [xOperation, yOperation]);
+      monacoInstance.executeEdits("my-source", [xOperation]);
+      const oldDiff = endXColumn - startXColumn;
+      yDifference = xValue.toString().length - oldDiff;
+    }
+
+    if (!isNaN(yValue)) {
+      const startYLineNumber = get(node, "data.yRange.start.line", 0) + 1;
+      const startYColumn = get(node, "data.yRange.start.character", 0) + 1;
+      const endYLineNumber = get(node, "data.yRange.end.line", 0) + 1;
+      const endYColumn = get(node, "data.yRange.end.character", 0) + 1;
+      const yOperation = {
+        identifier: id,
+        range: {
+          startLineNumber: startYLineNumber,
+          startColumn: startYColumn + yDifference,
+          endLineNumber: endYLineNumber,
+          endColumn: endYColumn + yDifference,
+        },
+        text: `${yValue}`,
+        forceMoveMarkers: true,
+      };
+      monacoInstance.executeEdits("my-source", [yOperation]);
+    }
   };
 
   const onNodeSelect = (node: Node) => {
