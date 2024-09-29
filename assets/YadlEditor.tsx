@@ -77,7 +77,7 @@ export default function YadlEditor() {
       const nodesAndEdges = getNodesAndEdges(ast);
       setYadlNodes(nodesAndEdges);
       running = false;
-    }, 0);
+    }, 250);
   };
 
   const onNodeChange = (node: Node) => {
