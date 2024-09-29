@@ -11,6 +11,8 @@ import { deserializeAST, DocumentChangeResponse } from "langium-ast-helper";
 import syntaxHighlighting from "./scripts/yadl.monarch";
 import { getNodesAndEdges, YadlModelAstNode } from "utils/YADLDeserializer";
 import ReactFlowPreview from "./ReactFlowPreview";
+import { Node } from "@xyflow/react";
+import { get } from "lodash";
 addMonacoStyles("monaco-styles-helper");
 
 buildWorkerDefinition(
@@ -79,7 +81,55 @@ export default function YadlEditor() {
   };
 
   const onNodeChange = (node: Node) => {
+    if (!monacoEditor || !monacoEditor.current) {
+      return;
+    }
     console.log(` $$$$ onNodeChange ${JSON.stringify(node, null, 2)}`);
+
+    const monacoInstance = monacoEditor?.current
+      ?.getEditorWrapper()
+      ?.getEditor();
+    const xValue = node.position.x;
+    const yValue = node.position.y;
+
+    const startXLineNumber = get(node, "data.xRange.start.line", 0) + 1;
+    const startXColumn = get(node, "data.xRange.start.character", 0) + 1;
+    const endXLineNumber = get(node, "data.xRange.end.line", 0) + 1;
+    const endXColumn = get(node, "data.xRange.end.character", 0) + 1;
+
+    // console.error(
+    //   `$$$$ Row Details ${startLineNumber}, ${startColumn}, ${endLineNumber}, ${endColumn}`,
+    // );
+    console.error(`$$$$ xValue ${xValue}, ${yValue}`);
+    const id = { major: 1, minor: 1 };
+    const xOperation = {
+      identifier: id,
+      range: {
+        startLineNumber: startXLineNumber,
+        startColumn: startXColumn,
+        endLineNumber: endXLineNumber,
+        endColumn: endXColumn,
+      },
+      text: `${xValue}`,
+      forceMoveMarkers: true,
+    };
+
+    const startYLineNumber = get(node, "data.yRange.start.line", 0) + 1;
+    const startYColumn = get(node, "data.yRange.start.character", 0) + 1;
+    const endYLineNumber = get(node, "data.yRange.end.line", 0) + 1;
+    const endYColumn = get(node, "data.yRange.end.character", 0) + 1;
+    const yOperation = {
+      identifier: id,
+      range: {
+        startLineNumber: startYLineNumber,
+        startColumn: startYColumn,
+        endLineNumber: endYLineNumber,
+        endColumn: endYColumn,
+      },
+      text: `${yValue}`,
+      forceMoveMarkers: true,
+    };
+    monacoInstance.executeEdits("my-source", [xOperation, yOperation]);
   };
 
   const onNodeSelect = (node: Node) => {
@@ -87,9 +137,11 @@ export default function YadlEditor() {
       return;
     }
 
-    const monacoInstance = monacoEditor?.current?.getEditorWrapper()?.getEditor();
-    monacoInstance.setPosition({column: 5, lineNumber: 10});
-    monacoInstance.revealLineInCenter(15);
+    const monacoInstance = monacoEditor?.current
+      ?.getEditorWrapper()
+      ?.getEditor();
+    monacoInstance.setPosition({ column: 5, lineNumber: 6 });
+    monacoInstance.revealLineInCenter(6);
   };
 
   const renderEditor = () => {

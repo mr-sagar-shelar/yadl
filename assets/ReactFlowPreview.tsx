@@ -21,7 +21,7 @@ interface ReactFlowPreviewProps {
 }
 
 export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
-  const { initialNodes = [], initialEdges = [], onNodeSelect } = props;
+  const { initialNodes = [], initialEdges = [], onNodeSelect, onNodeChange } = props;
 
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -46,9 +46,9 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
         }
         if (updatedNode.type == "position" && !updatedNode.dragging) {
           const currentNode = nds.filter((node) => node.id === updatedNode.id);
-          console.log(
-            ` $$$$ Update Position: ${JSON.stringify(currentNode, null, 2)}`,
-          );
+          if (currentNode.length > 0) {
+            onNodeChange(currentNode[0]);
+          }
         }
         return applyNodeChanges(changes, nds);
       });

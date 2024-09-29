@@ -1,5 +1,7 @@
 import { AstNode } from "langium-ast-helper";
-
+import {
+  Node,
+} from "@xyflow/react";
 export function getYADLNodes(ast: AstNode): YadlModelAstNode {
   //   console.error(JSON.stringify(ast, null, 2));
   const astNode = getYadlModelAst(ast as YadlModelAstNode);
@@ -15,10 +17,10 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
     const textRange = position.$textRegion;
     let xRange: Range = undefined;
     let yRange: Range = undefined;
-    if (textRange.assignments.x.length > 0) {
+    if (textRange.assignments?.x?.length > 0) {
       xRange = textRange.assignments.x[0].range;
     }
-    if (textRange.assignments.y.length > 0) {
+    if (textRange.assignments?.y?.length > 0) {
       yRange = textRange.assignments.y[0].range;
     }
     return {
