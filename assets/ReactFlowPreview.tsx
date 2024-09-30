@@ -10,6 +10,7 @@ import {
   OnNodesChange,
   applyNodeChanges,
   NodeChange,
+  applyEdgeChanges,
 } from "@xyflow/react";
 import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
 
@@ -24,10 +25,15 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
   const { initialNodes = [], initialEdges = [], onNodeSelect, onNodeChange } = props;
 
   const [nodes, setNodes] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (changes) => setEdges((eds) => addEdge(changes, eds)),
+    [setEdges],
+  );
+
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges],
   );
 
@@ -67,6 +73,7 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         proOptions={{ hideAttribution: true }}
+        defaultEdgeOptions={{ animated: true }}
       >
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>

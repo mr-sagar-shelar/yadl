@@ -7,7 +7,8 @@ Entity:
     '}';
 
 Field:
-    (many?='many')? (unique?='unique')? name=ID ':' type=[DataType:QualifiedName] isRequired?='required'? (min=MinValidation)? (max=MaxValidation)?;
+    // (many?='many')? (unique?='unique')? name=ID ':' type=[DataType:QualifiedName] isRequired?='required'? (min=MinValidation)? (max=MaxValidation)?;
+    (many?='many')? (unique?='unique')? name=ID ':' isRequired?='required'? (min=MinValidation)? (max=MaxValidation)?;
 
 ApplicationConfig:
     'appConfig' name=ID '{'

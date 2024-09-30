@@ -1,15 +1,15 @@
 Position:
     'position' '{'
-        'x:' x=NUMBER
-        'y:' y=NUMBER 
+        'x:' (isNegative?='-')? x=NUMBER
+        'y:' (isNegative?='-')? y=NUMBER 
     '}';
 
 
 QualifiedName returns string:
     ID ('.' ID)*;
 
-DataType:
-    'datatype' name=ID;
+// DataType:
+//     'datatype' name=ID;
 
 terminal NUMBER returns number: /[0-9]+(\.[0-9]*)?/;
 hidden terminal WS: /\s+/;
