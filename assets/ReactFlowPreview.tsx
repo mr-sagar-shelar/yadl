@@ -11,6 +11,7 @@ import {
   applyNodeChanges,
   NodeChange,
   applyEdgeChanges,
+  NodeSelectionChange,
 } from "@xyflow/react";
 import { edgeTypes, nodeTypes } from "./nodes/nodeTypes";
 
@@ -22,7 +23,12 @@ interface ReactFlowPreviewProps {
 }
 
 export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
-  const { initialNodes = [], initialEdges = [], onNodeSelect, onNodeChange } = props;
+  const {
+    initialNodes = [],
+    initialEdges = [],
+    onNodeSelect,
+    onNodeChange,
+  } = props;
 
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges] = useEdgesState(initialEdges);
@@ -47,10 +53,16 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
       const updatedNode = changes[0] as Node;
       setNodes((nds) => {
         if (updatedNode.type == "select") {
-          // console.log(` $$$$ Select Node: ${updatedNode.type}`);
-          const currentNode = nds.filter((node) => node.id === updatedNode.id);
-          if (currentNode.length > 0) {
-            onNodeSelect(currentNode[0]);
+          const selectedChangedNode = (changes as NodeSelectionChange[]).filter(
+            (change) => change.selected,
+          );
+          if (selectedChangedNode.length > 0) {
+            const selectNode = nds.filter(
+              (node) => node.id === selectedChangedNode[0].id,
+            );
+            if (selectNode.length > 0) {
+              onNodeSelect(selectNode[0]);
+            }
           }
         }
         if (updatedNode.type == "position" && !updatedNode.dragging) {
