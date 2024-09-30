@@ -1,7 +1,7 @@
 Position:
     'position' '{'
-        'x:' (isNegative?='-')? x=NUMBER
-        'y:' (isNegative?='-')? y=NUMBER 
+        'x:' (isNegativeX?='-')? x=NUMBER
+        'y:' (isNegativeY?='-')? y=NUMBER 
     '}';
 
 

@@ -141,11 +141,13 @@ export default function YadlEditor() {
       return;
     }
 
+
     const monacoInstance = monacoEditor?.current
       ?.getEditorWrapper()
       ?.getEditor();
-    monacoInstance.setPosition({ column: 5, lineNumber: 6 });
-    monacoInstance.revealLineInCenter(6);
+    const selectedLine = get(node, "data.startLine", 0);
+    monacoInstance.setPosition({ column: 0, lineNumber: selectedLine });
+    monacoInstance.revealLineInCenter(selectedLine);
   };
 
   const renderEditor = () => {

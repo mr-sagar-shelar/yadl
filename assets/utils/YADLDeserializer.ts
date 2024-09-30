@@ -1,11 +1,9 @@
 import { AstNode } from "langium-ast-helper";
-import {
-  Node,
-} from "@xyflow/react";
+import { Node } from "@xyflow/react";
+import { get } from "lodash";
 export function getYADLNodes(ast: AstNode): YadlModelAstNode {
   //   console.error(JSON.stringify(ast, null, 2));
   const astNode = getYadlModelAst(ast as YadlModelAstNode);
-  //   console.error(JSON.stringify(astNode.enums.length, null, 2));
   const getPosition = (position: Position): Position => {
     if (!position) {
       return {
@@ -31,37 +29,34 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       yRange: yRange,
     };
   };
-  const enums = astNode.enums.flatMap((d: Enums) => {
-    return {
-      name: d.name,
-      $type: "Enum",
-    };
-  });
-  const icons = astNode.icons.flatMap((i: Icon) => {
+  const icons = astNode.icons.flatMap((i: Icon): Icon => {
     return {
       icon: i.icon,
       $type: "Icon",
       position: getPosition(i.position),
+      startLine: get(i, "$textRegion.range.start.line", 0) + 1,
     };
   });
-  const boxes = astNode.boxes.flatMap((b: Box) => {
+  const boxes = astNode.boxes.flatMap((b: Box): Box => {
     return {
       icon: b.icon,
       label: b.label,
       $type: "Box",
       position: getPosition(b.position),
+      startLine: get(b, "$textRegion.range.start.line", 0) + 1,
     };
   });
 
-  const devices = astNode.devices.flatMap((d: Device) => {
+  const devices = astNode.devices.flatMap((d: Device): Device => {
     return {
       type: d.type,
       $type: "Device",
       position: getPosition(d.position),
+      startLine: get(d, "$textRegion.range.start.line", 0) + 1,
     };
   });
 
-  const getArrowStyle = (a: ArrowStyle) => {
+  const getArrowStyle = (a: ArrowStyle): ArrowStyle => {
     return {
       $type: "ArrowStyle",
       left: a.left,
@@ -71,24 +66,25 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       transform: a.transform,
     };
   };
-  const annotations = astNode.annotations.flatMap((a: Annotation) => {
-    let arrowStyle;
-    if (a.arrowStyle) {
-      arrowStyle = getArrowStyle(a.arrowStyle);
-    }
-    const position = getPosition(a.position);
-    return {
-      label: a.label,
-      $type: "annotation",
-      position: getPosition(a.position),
-      arrowStyle: arrowStyle,
-    };
-  });
+  const annotations = astNode.annotations.flatMap(
+    (a: Annotation): Annotation => {
+      let arrowStyle;
+      if (a.arrowStyle) {
+        arrowStyle = getArrowStyle(a.arrowStyle);
+      }
 
+      return {
+        label: a.label,
+        $type: "annotation",
+        position: getPosition(a.position),
+        arrowStyle: arrowStyle,
+        startLine: get(a, "$textRegion.range.start.line", 0) + 1,
+      };
+    },
+  );
   return {
     name: astNode.$type,
     $type: astNode.$type,
-    enums: enums,
     icons: icons,
     boxes: boxes,
     devices: devices,
@@ -100,9 +96,6 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
   return {
     name: ast.name,
     $type: "YadlModel",
-    enums: (ast.enums as YadlModelElement[])?.filter(
-      (e) => e.$type === "Enum",
-    ) as Enums[],
     icons: (ast.icons as Icon[])?.filter((e) => e.$type === "Icon") as Icon[],
     boxes: (ast.boxes as Box[])?.filter((e) => e.$type === "Box") as Box[],
     devices: (ast.devices as Device[])?.filter(
@@ -124,6 +117,7 @@ export function getNodesAndEdges(astNode: AstNode): Node[] {
         icon: icon.icon,
         xRange: icon.position?.xRange,
         yRange: icon.position?.yRange,
+        startLine: icon.startLine,
       },
       type: "icon",
     } as Node;
@@ -136,6 +130,7 @@ export function getNodesAndEdges(astNode: AstNode): Node[] {
         label: box.label,
         xRange: box.position?.xRange,
         yRange: box.position?.yRange,
+        startLine: box.startLine,
       },
       type: "resizer",
     } as Node;
@@ -152,6 +147,7 @@ export function getNodesAndEdges(astNode: AstNode): Node[] {
         arrowStyle: annotation.arrowStyle,
         xRange: annotation.position?.xRange,
         yRange: annotation.position?.yRange,
+        startLine: annotation.startLine,
       },
       type: "annotation",
     } as Node;
@@ -164,6 +160,7 @@ export function getNodesAndEdges(astNode: AstNode): Node[] {
         type: device.type,
         xRange: device.position?.xRange,
         yRange: device.position?.yRange,
+        startLine: device.startLine,
       },
       type: "device",
     } as Node;
@@ -178,15 +175,10 @@ export function getNodesAndEdges(astNode: AstNode): Node[] {
 
 export interface YadlModelAstNode extends AstNode, YadlModelElement {
   $type: "YadlModel";
-  enums: Enums[];
   icons: Icon[];
   boxes: Box[];
   devices: Device[];
   annotations: Annotation[];
-}
-
-export interface Enums extends YadlModelElement {
-  $type: string;
 }
 
 export interface Position {
@@ -202,12 +194,14 @@ export interface Icon {
   $type: string;
   icon: string;
   position?: Position;
+  startLine?: number;
 }
 
 export interface Device {
   $type: string;
   type: string;
   position?: Position;
+  startLine?: number;
 }
 
 export interface Annotation {
@@ -215,6 +209,7 @@ export interface Annotation {
   $textRegion?: TextRegion;
   label: string;
   position?: Position;
+  startLine?: number;
   arrowStyle?: ArrowStyle;
 }
 
@@ -232,6 +227,7 @@ export interface Box {
   icon: string;
   label: string;
   position?: Position;
+  startLine?: number;
 }
 
 export interface RangeRow {

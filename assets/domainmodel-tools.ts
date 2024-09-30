@@ -10,12 +10,12 @@ export function getMainTreeNode(ast: AstNode): TreeNode {
     };
   };
 
-  const enums = astNode.enums.flatMap((e) => getEnumTypeTreeNode(e));
+  // const enums = astNode.enums.flatMap((e) => getEnumTypeTreeNode(e));
   const children: TreeNode[] = [];
 
-  if (enums.length > 0) {
-    children.push({ name: "Enum", $type: "Enum", children: enums });
-  }
+  // if (enums.length > 0) {
+  //   children.push({ name: "Enum", $type: "Enum", children: enums });
+  // }
 
   return {
     name: astNode.$type,
