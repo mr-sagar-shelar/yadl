@@ -11,7 +11,7 @@ import { deserializeAST, DocumentChangeResponse } from "langium-ast-helper";
 import syntaxHighlighting from "./scripts/yadl.monarch";
 import { getNodesAndEdges, YadlModelAstNode } from "utils/YADLDeserializer";
 import ReactFlowPreview from "./ReactFlowPreview";
-import { Node } from "@xyflow/react";
+import { Node, Edge } from "@xyflow/react";
 import { get } from "lodash";
 addMonacoStyles("monaco-styles-helper");
 
@@ -25,6 +25,7 @@ export default function YadlEditor() {
   const monacoEditor = React.useRef();
   const [userConfig, setUserConfig] = React.useState<UserConfig>();
   const [yadlNodes, setYadlNodes] = React.useState<Node[]>([]);
+  const [yadlEdges, setYadlEdges] = React.useState<Edge[]>([]);
   let running = false;
   let timeout: number | null = null;
 
@@ -75,7 +76,8 @@ export default function YadlEditor() {
       running = true;
       const ast = deserializeAST(resp.content) as YadlModelAstNode;
       const nodesAndEdges = getNodesAndEdges(ast);
-      setYadlNodes(nodesAndEdges);
+      setYadlNodes(nodesAndEdges.nodes);
+      setYadlEdges(nodesAndEdges.edges);
       running = false;
     }, 250);
   };
@@ -173,7 +175,7 @@ export default function YadlEditor() {
     <div>
       {renderEditor()}
       <ReactFlowPreview
-        initialEdges={[]}
+        initialEdges={yadlEdges}
         initialNodes={yadlNodes}
         onNodeChange={onNodeChange}
         onNodeSelect={onNodeSelect}

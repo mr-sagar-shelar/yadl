@@ -11,15 +11,19 @@ draft: false
 ---
 
 {{< yadlEditor code=
-`icon alexa-for-business { position { x: 0 y: 20 } }
-icon chatbot { position { x: 130 y: 20 } }
-icon mongo-db { position { x: 260 y: 20 } }
-icon ableton-dark { position { x: 390 y: 20 } }
-icon vue-js-dark { position { x: 0 y: 150 } }
-icon x-ray { position { x: 130 y: 150 } }
-icon docker { position { x: 260 y: 150 } }
-icon kubernetes { position { x: 390 y: 150 } }
-icon terraform-dark { position { x: 510 y: 150 } }
+`icon Alexa alexa-for-business { position { x: 0 y: 20 } }
+icon Chatbot chatbot { position { x: 130 y: 20 } }
+icon Mongo mongo-db { position { x: 260 y: 20 } }
+icon Ableton ableton-dark { position { x: 390 y: 20 } }
+icon Vue vue-js-dark { position { x: 0 y: 150 } }
+icon XRay x-ray { position { x: 130 y: 150 } }
+icon Docker docker { position { x: 260 y: 150 } }
+icon Kubernetes kubernetes { position { x: 390 y: 150 } }
+icon Terraform terraform-dark { position { x: 510 y: 150 } }
+
+edge Alexa => Chatbot
+edge Docker => Kubernetes
+
 box "YADL" [icon: angular-dark] {
     position {
         x: 700 y: 150

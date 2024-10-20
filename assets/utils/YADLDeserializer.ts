@@ -1,5 +1,5 @@
 import { AstNode } from "langium-ast-helper";
-import { Node } from "@xyflow/react";
+import { Node, Edge as ReactFlowEdge } from "@xyflow/react";
 import { get } from "lodash";
 export function getYADLNodes(ast: AstNode): YadlModelAstNode {
   //   console.error(JSON.stringify(ast, null, 2));
@@ -29,9 +29,18 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
       yRange: yRange,
     };
   };
+  
+  const edges = astNode.edges.flatMap((e: any): Edge => {
+    return {
+      $type: "Edge",
+      destination: e.destination?.ref?.name,
+      source: e.source?.ref?.name
+    };
+  });
   const icons = astNode.icons.flatMap((i: Icon): Icon => {
     return {
       icon: i.icon,
+      name: i.name,
       $type: "Icon",
       position: getPosition(i.position),
       startLine: get(i, "$textRegion.range.start.line", 0) + 1,
@@ -85,6 +94,7 @@ export function getYADLNodes(ast: AstNode): YadlModelAstNode {
   return {
     name: astNode.$type,
     $type: astNode.$type,
+    edges: edges,
     icons: icons,
     boxes: boxes,
     devices: devices,
@@ -96,6 +106,7 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
   return {
     name: ast.name,
     $type: "YadlModel",
+    edges: (ast.edges as Edge[])?.filter((e) => e.$type === "Edge") as Edge[],
     icons: (ast.icons as Icon[])?.filter((e) => e.$type === "Icon") as Icon[],
     boxes: (ast.boxes as Box[])?.filter((e) => e.$type === "Box") as Box[],
     devices: (ast.devices as Device[])?.filter(
@@ -107,11 +118,20 @@ export function getYadlModelAst(ast: YadlModelAstNode): YadlModelAstNode {
   };
 }
 
-export function getNodesAndEdges(astNode: AstNode): Node[] {
+export function getNodesAndEdges(astNode: AstNode) {
   const ast = getYADLNodes(astNode);
+  const edges = ast.edges?.map((edge, index) => {
+    return {
+      id: `edge-${index}`,
+      type: "edge",
+      source: edge.source,
+      target: edge.destination
+    } as ReactFlowEdge;
+  });
+  
   const iconNodes = ast.icons.map((icon, index) => {
     return {
-      id: `icon-${index}`,
+      id: `${icon.name}`,
       position: { x: icon.position?.x || 0, y: icon.position?.y || 100 },
       data: {
         icon: icon.icon,
@@ -170,11 +190,15 @@ export function getNodesAndEdges(astNode: AstNode): Node[] {
     boxNodes.concat(annotations.concat(devices)),
   );
 
-  return totalNodes;
+  return {
+    nodes: totalNodes,
+    edges: edges,
+  };
 }
 
 export interface YadlModelAstNode extends AstNode, YadlModelElement {
   $type: "YadlModel";
+  edges: Edge[];
   icons: Icon[];
   boxes: Box[];
   devices: Device[];
@@ -192,9 +216,16 @@ export interface Position {
 
 export interface Icon {
   $type: string;
+  name?: string;
   icon: string;
   position?: Position;
   startLine?: number;
+}
+
+export interface Edge {
+  $type: string;
+  source: string;
+  destination: string;
 }
 
 export interface Device {

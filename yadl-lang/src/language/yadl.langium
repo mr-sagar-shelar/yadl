@@ -5,7 +5,7 @@ import "./entity-relationship"
 import "./diagraming"
 
 entry YadlModel:
-    (icons+=Icon | boxes+=Box | annotations+=Annotation | devices+=Device)*;
+    (icons+=Icon | boxes+=Box | annotations+=Annotation | devices+=Device | edges+=Edge)*;
 
 // (persons+=Person | greetings+=Greeting | entities+=Entity | atoms+=Atom | molecules+=Molecule | organisms+=Organism
 //     | pages+=Page | applicationConfigs+=ApplicationConfig | enums+=Enum | paginations+=Pagination | relationships+=Relationship | elements+=AbstractElement

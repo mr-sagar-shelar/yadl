@@ -47,3 +47,6 @@ Device:
     'device' type=DeviceType ('{'
         (position=Position)?
     '}')?;
+
+Edge:
+   'edge' source=[Icon:ID] '=>' destination=[Icon:ID];

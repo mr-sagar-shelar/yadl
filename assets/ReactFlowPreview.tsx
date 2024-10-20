@@ -34,8 +34,11 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
   const [edges, setEdges] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
-    (changes) => setEdges((eds) => addEdge(changes, eds)),
-    [setEdges],
+    (changes) => {
+
+      console.error(` $$$$$$ onConnect`);
+      setEdges((eds) => addEdge(changes, eds))
+    },[setEdges],
   );
 
   const onEdgesChange = useCallback(
