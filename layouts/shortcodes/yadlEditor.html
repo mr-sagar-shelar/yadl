@@ -1,15 +1,17 @@
-<div id="editor"></div>
-
 <link rel="stylesheet" href="/css/reactflow.css" />
 <link rel="stylesheet" href="/css/devices.min.css" />
 
+<div class="yadl-editor-container">
+  <div class="w-full">
+    <div id="editor"></div>
 
-{{ if .IsNamedParams }}
-  <div id="editor-code" data-code='{{ .Get "code" }}'></div>
-{{ end }}
-
-{{ with resources.Get "YadlEditor.tsx" }}
-  {{ $options := dict "defines" (dict "process.env.NODE_ENV" "\"development\"" "process.env.BaseURL" (printf `"%s"` $.Site.BaseURL)) }}
-  {{ $script := . | js.Build $options }}
-  <script src="{{ $script.RelPermalink }}" defer></script>
-{{ end }}
+    {{ if .IsNamedParams }}
+      <div id="editor-code" data-code="{{ .Get "code" }}"></div>
+    {{ end }}
+    {{ with resources.Get "YadlEditor.tsx" }}
+      {{ $options := dict "defines" (dict "process.env.NODE_ENV" "\"development\"" "process.env.BaseURL" (printf `"%s"` $.Site.BaseURL)) }}
+      {{ $script := . | js.Build $options }}
+      <script src="{{ $script.RelPermalink }}" defer></script>
+    {{ end }}
+  </div>
+</div>

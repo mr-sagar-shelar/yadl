@@ -98,7 +98,7 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
   );
 
   return (
-    <div style={{ width: "70vw", height: "400px" }}>
+    <div style={{ width: "100%", height: "400px" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
