@@ -200,10 +200,11 @@ export default function YadlEditor() {
   };
 
   return (
-    <div class="grid grid-cols-2 gap-1">
-      <div style={{ background: "red", minHeight: "74vh" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+      <div style={{ minHeight: "74vh" }}>
         {renderEditor()}
       </div>
+      <div>
         <ReactFlowPreview
           initialEdges={yadlEdges}
           initialNodes={yadlNodes}
@@ -211,6 +212,7 @@ export default function YadlEditor() {
           onNodeSelect={onNodeSelect}
           onEdgeConnect={onEdgeConnect}
         />
+      </div>
     </div>
     // <div className="grid grid-cols-2 gap-1">
     // <div style={{background: "red", minHeight: "74vh"}}>3</div>
