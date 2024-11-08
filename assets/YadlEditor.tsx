@@ -143,7 +143,6 @@ export default function YadlEditor() {
       return;
     }
 
-
     const monacoInstance = monacoEditor?.current
       ?.getEditorWrapper()
       ?.getEditor();
@@ -160,10 +159,8 @@ export default function YadlEditor() {
     const monacoInstance = monacoEditor?.current
       ?.getEditorWrapper()
       ?.getEditor();
-    const monacoModel = monacoEditor?.current
-      ?.getEditorWrapper()?.getModel();
+    const monacoModel = monacoEditor?.current?.getEditorWrapper()?.getModel();
     const selectedLine = monacoModel?.getLineCount() || 0;
-    
 
     const xOperation = {
       identifier: { major: 1, minor: 1 },
@@ -184,7 +181,8 @@ export default function YadlEditor() {
 
   const renderEditor = () => {
     const style = {
-      height: "500px",
+      // height: "500px",
+      height: "100%",
       width: "100%",
     };
     return (
@@ -202,16 +200,30 @@ export default function YadlEditor() {
   };
 
   return (
-    <div>
-      {renderEditor()}
-      <ReactFlowPreview
-        initialEdges={yadlEdges}
-        initialNodes={yadlNodes}
-        onNodeChange={onNodeChange}
-        onNodeSelect={onNodeSelect}
-        onEdgeConnect={onEdgeConnect}
-      />
+    <div class="grid grid-cols-2 gap-1">
+      <div style={{ background: "red", minHeight: "74vh" }}>
+        {renderEditor()}
+      </div>
+        <ReactFlowPreview
+          initialEdges={yadlEdges}
+          initialNodes={yadlNodes}
+          onNodeChange={onNodeChange}
+          onNodeSelect={onNodeSelect}
+          onEdgeConnect={onEdgeConnect}
+        />
     </div>
+    // <div className="grid grid-cols-2 gap-1">
+    // <div style={{background: "red", minHeight: "74vh"}}>3</div>
+    // <div style={{background: "green"}}>4</div>
+    //
+    //   <ReactFlowPreview
+    //     initialEdges={yadlEdges}
+    //     initialNodes={yadlNodes}
+    //     onNodeChange={onNodeChange}
+    //     onNodeSelect={onNodeSelect}
+    //     onEdgeConnect={onEdgeConnect}
+    //   />
+    // </div>
   );
 }
 

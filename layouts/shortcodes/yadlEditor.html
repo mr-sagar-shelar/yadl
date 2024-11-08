@@ -2,7 +2,10 @@
 <link rel="stylesheet" href="/css/devices.min.css" />
 
 <div class="yadl-editor-container">
-  <div class="w-full">
+  <!-- <div class="grid grid-cols-2 gap-1">
+    <div>1</div>
+    <div>2</div>
+  </div> -->
     <div id="editor"></div>
 
     {{ if .IsNamedParams }}
@@ -13,5 +16,4 @@
       {{ $script := . | js.Build $options }}
       <script src="{{ $script.RelPermalink }}" defer></script>
     {{ end }}
-  </div>
 </div>
