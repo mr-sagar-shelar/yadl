@@ -152,6 +152,36 @@ export default function YadlEditor() {
     monacoInstance.revealLineInCenter(selectedLine);
   };
 
+  const onEdgeConnect = (edge: Edge) => {
+    if (!monacoEditor || !monacoEditor.current) {
+      return;
+    }
+
+    const monacoInstance = monacoEditor?.current
+      ?.getEditorWrapper()
+      ?.getEditor();
+    const monacoModel = monacoEditor?.current
+      ?.getEditorWrapper()?.getModel();
+    const selectedLine = monacoModel?.getLineCount() || 0;
+    
+
+    const xOperation = {
+      identifier: { major: 1, minor: 1 },
+      range: {
+        startLineNumber: selectedLine,
+        startColumn: 1,
+        endLineNumber: selectedLine,
+        endColumn: 1,
+      },
+      text: `edge ${edge.source} => ${edge.target}\n `,
+      forceMoveMarkers: true,
+    };
+
+    monacoInstance.executeEdits("my-source", [xOperation]);
+    monacoInstance.setPosition({ column: 0, lineNumber: selectedLine });
+    monacoInstance.revealLineInCenter(selectedLine);
+  };
+
   const renderEditor = () => {
     const style = {
       height: "500px",
@@ -179,6 +209,7 @@ export default function YadlEditor() {
         initialNodes={yadlNodes}
         onNodeChange={onNodeChange}
         onNodeSelect={onNodeSelect}
+        onEdgeConnect={onEdgeConnect}
       />
     </div>
   );

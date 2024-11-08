@@ -20,6 +20,15 @@ interface ReactFlowPreviewProps {
   initialEdges: Edge[];
   onNodeChange: (node: Node) => void;
   onNodeSelect: (node: Node) => void;
+  onEdgeConnect?: (edge: Edge) => void;
+}
+
+const defaultProps: ReactFlowPreviewProps = {
+  initialNodes: [],
+  initialEdges: [],
+  onNodeChange: (node: Node) => {},
+  onNodeSelect: (node: Node) => {},
+  onEdgeConnect: (node: Edge) => {}
 }
 
 export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
@@ -28,6 +37,7 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
     initialEdges = [],
     onNodeSelect,
     onNodeChange,
+    onEdgeConnect
   } = props;
 
   const [nodes, setNodes] = useNodesState(initialNodes);
@@ -36,8 +46,15 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
   const onConnect = useCallback(
     (changes) => {
 
-      console.error(` $$$$$$ onConnect`);
       setEdges((eds) => addEdge(changes, eds))
+      const edgeSource = changes.source;
+      const edgeTarget = changes.target;
+      const newEdge: Edge = {
+        id: `${edgeSource} => ${edgeTarget}`,
+        source: edgeSource,
+        target: edgeTarget
+      }
+      onEdgeConnect(newEdge);
     },[setEdges],
   );
 
@@ -98,3 +115,5 @@ export default function ReactFlowPreview(props: ReactFlowPreviewProps) {
     </div>
   );
 }
+
+ReactFlowPreview.defaultProps = defaultProps;
