@@ -13,6 +13,7 @@ import { getNodesAndEdges, YadlModelAstNode } from "utils/YADLDeserializer";
 import ReactFlowPreview from "./ReactFlowPreview";
 import { Node, Edge } from "@xyflow/react";
 import { get } from "lodash";
+import { Allotment } from "allotment";
 addMonacoStyles("monaco-styles-helper");
 
 buildWorkerDefinition(
@@ -200,32 +201,20 @@ export default function YadlEditor() {
   };
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr" }}>
       <div style={{ minHeight: "74vh" }}>
-        {renderEditor()}
-      </div>
-      <div>
-        <ReactFlowPreview
-          initialEdges={yadlEdges}
-          initialNodes={yadlNodes}
-          onNodeChange={onNodeChange}
-          onNodeSelect={onNodeSelect}
-          onEdgeConnect={onEdgeConnect}
-        />
+        <Allotment defaultSizes={[100, 200]} minSize={400}>
+          {renderEditor()}
+          <ReactFlowPreview
+            initialEdges={yadlEdges}
+            initialNodes={yadlNodes}
+            onNodeChange={onNodeChange}
+            onNodeSelect={onNodeSelect}
+            onEdgeConnect={onEdgeConnect}
+          />
+        </Allotment>
       </div>
     </div>
-    // <div className="grid grid-cols-2 gap-1">
-    // <div style={{background: "red", minHeight: "74vh"}}>3</div>
-    // <div style={{background: "green"}}>4</div>
-    //
-    //   <ReactFlowPreview
-    //     initialEdges={yadlEdges}
-    //     initialNodes={yadlNodes}
-    //     onNodeChange={onNodeChange}
-    //     onNodeSelect={onNodeSelect}
-    //     onEdgeConnect={onEdgeConnect}
-    //   />
-    // </div>
   );
 }
 
